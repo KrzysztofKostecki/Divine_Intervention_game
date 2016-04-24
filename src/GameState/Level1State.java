@@ -94,7 +94,7 @@ public class Level1State extends GameState {
         experience = xp.getExperience();
         //Rog
 
-        player = new Player();
+        player = new Player(OptionsState.choosenCharacter);
         player.setPosition(0, GamePanel.HEIGHT / 2 - Player.pHEIGHT);
         player.setVector(currentspeed, 0);
         //platforms
