@@ -63,6 +63,8 @@ public class Player {
     public Player(int character){
         // load sprites
         setCharacter(character);
+        sfx = new HashMap<Integer, AudioPlayer>();
+        sfx.put(JUMP,new AudioPlayer("/SFX/jump.mp3"));
         animation = new Animation();
         currentAction = WALK;
         animation.setFrames(sprites.get(WALK));
@@ -118,6 +120,8 @@ public class Player {
 
             }
 
+
+
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -143,6 +147,7 @@ public class Player {
     }
 
     public void setJumping(boolean isJump){
+        sfx.get(JUMP).play();
         this.JUMPING = isJump;
     }
 
