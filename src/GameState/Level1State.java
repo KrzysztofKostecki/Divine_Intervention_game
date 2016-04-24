@@ -113,7 +113,6 @@ public class Level1State extends GameState {
         for(Platform i: platforms){
             i.setVector(0,0);
         }
-
         }
 
     @Override
