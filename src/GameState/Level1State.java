@@ -47,7 +47,7 @@ public class Level1State extends GameState {
     //position of landing
    private double acceleration = 0.0006;
     //platform movement speed
-    private double platformSpeed = 5;
+    private double platformSpeed = 8;
     //Pause
     private int currentChoice = 0;
     private String[] options = {
@@ -58,9 +58,10 @@ public class Level1State extends GameState {
 
     private Color titleColor;
     private Font titleFont;
-
     private Font font;
 
+    //random just for usage in many places
+    private Random random;
 
 
 
@@ -109,7 +110,7 @@ public class Level1State extends GameState {
 
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
-        Random random = new Random();
+        random = new Random();
         platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330), random.nextInt(GamePanel.HEIGHT));
         for(Platform i: platforms){
             i.setVector(0,0);
@@ -164,6 +165,8 @@ public class Level1State extends GameState {
             if (Math.round(player.getX()) > Platform.pWIDTH - 60 && Math.round(player.getX()) < Platform.pWIDTH - 50) {
                 player.setJumping(true);
                 player.setInAir(true);
+                platforms.get(0).setDX(-1.3);
+
             }
 
             //success operations
@@ -171,8 +174,8 @@ public class Level1State extends GameState {
                 if (success && Math.round(player.getX()) > platforms.get(1).getMaxX() - Platform.pWIDTH / 2) {
                     Platform start = platforms.remove(0);
 
-
-                    platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (GamePanel.HEIGHT / 2 - platforms.get(0).getMinY()) / changeSpeed);
+                    platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
+                            (random.nextInt((GamePanel.HEIGHT-200 - 200))+200 - platforms.get(0).getMinY()) / changeSpeed);
                     player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (GamePanel.HEIGHT / 2 - Player.pHEIGHT - platforms.get(0).getMinY()) / changeSpeed);
                     start.reload();
                     platforms.add(start);
