@@ -61,7 +61,7 @@ public class Player {
 
             BufferedImage spritesheet = ImageIO.read(
                     getClass().getResourceAsStream(
-                            "/Sprites/Player/spritesheet1.png"
+                            "/Sprites/Player/spritesheet.png"
                     )
             );
 
