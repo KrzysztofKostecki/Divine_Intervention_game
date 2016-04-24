@@ -141,7 +141,7 @@ public class Level1State extends GameState {
                 platforms.get(1).setDX(0);
                 player.setVector(currentspeed,0);
 
-                //bg.setVector(0,0);
+                bg.setVector(0,0);
             }
         }else {
             //bg.update();
@@ -178,7 +178,7 @@ public class Level1State extends GameState {
                     start.reload();
                     platforms.add(start);
                     platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
-                    //bg.setVector((0 - platforms.get(0).getMinX()) / changeSpeed,0);
+                    bg.setVector((0 - platforms.get(0).getMinX()) / (changeSpeed*3),0);
                     score++;
                     success = false;
                     settingup = true;

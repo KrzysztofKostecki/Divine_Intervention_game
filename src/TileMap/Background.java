@@ -4,6 +4,7 @@ import Main.GamePanel;
 
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 /**
  * Created by Krzysztof on 05.04.2016.
@@ -48,6 +49,7 @@ public class Background {
 		g.drawImage(image, (int)x, (int)y, null);
 		
 		if(x < 0) {
+			x = GamePanel.WIDTH;
 			g.drawImage(
 				image,
 				(int)x + GamePanel.WIDTH,
