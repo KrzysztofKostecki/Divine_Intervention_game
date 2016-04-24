@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Divine_Intervention:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Divine_Intervention_jar</output-path>
+    <root id="archive" name="Divine_Intervention.jar">
+      <element id="module-output" name="Divine_Intervention" />
+    </root>
+  </artifact>
+</component>
