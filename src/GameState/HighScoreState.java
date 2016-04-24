@@ -21,7 +21,6 @@ public class HighScoreState extends GameState{
     private Font font;
     private static ArrayList<String> scoresTable;
 
-
     //for read
     public static int highest;
 

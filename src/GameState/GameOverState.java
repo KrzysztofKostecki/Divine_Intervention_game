@@ -63,7 +63,10 @@ public class GameOverState extends GameState {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		drawCenteredString("GAME OVER",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
+		if (Level1State.score < HighScoreState.highest)
+			drawCenteredString("GAME OVER",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
+		else
+			drawCenteredString("NEW HIGHSCORE!",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
 		g.setFont(font);
 
 		drawCenteredString("Your score: " + Integer.toString(Level1State.score),
