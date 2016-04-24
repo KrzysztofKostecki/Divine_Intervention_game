@@ -47,7 +47,7 @@ public class Level1State extends GameState {
     //position of landing
    private double acceleration = 0.0006;
     //platform movement speed
-    private double platformSpeed = 8;
+    private double platformSpeed = 6;
     //Pause
     private int currentChoice = 0;
     private String[] options = {
