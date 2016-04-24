@@ -18,7 +18,7 @@ public class MenuState extends GameState {
 			"Start",
 			"Options",
 			// Kolybacz HighScore
-			"High Score_test",
+			"High Score",
 			"Credits",
 			// Kolybacz
 			"Quit"
@@ -84,6 +84,7 @@ public class MenuState extends GameState {
 
 	private void select() {
 		if(currentChoice == 0) {
+			gsm.setState(GameStateManager.LEVEL1STATE);
 			gsm.setState(GameStateManager.LEVEL1STATE);
 		}
 		if(currentChoice == 1) {
