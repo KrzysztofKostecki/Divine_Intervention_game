@@ -15,19 +15,19 @@ import java.util.ArrayList;
 public class Player {
 
     private BufferedImage image;
-    private double x;
+    protected double x;
     public double getX(){
         return x;
     }
-    private double y;
+    protected double y;
     public double getY(){
         return y;
     }
-    private double dx;
+    protected double dx;
     public double getDX(){
         return dx;
     }
-    private double dy;
+    protected double dy;
 
     private double delay = 100;
 
@@ -53,7 +53,7 @@ public class Player {
 
     private int currentAction;
 
-    private Animation animation;
+    protected Animation animation;
 
 
     public Player(int character){
@@ -162,6 +162,7 @@ public class Player {
         animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+90));
         animation.update();
     }
+
 
     public void draw(Graphics2D g) {
         g.setColor(new Color(0x000000));
