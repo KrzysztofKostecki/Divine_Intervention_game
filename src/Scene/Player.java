@@ -1,5 +1,6 @@
 package Scene;
 
+import Audio.AudioPlayer;
 import GameState.OptionsState;
 import Main.GamePanel;
 
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Krzysztof on 21.04.2016.
@@ -44,7 +46,7 @@ public class Player {
     // animations
     private ArrayList<BufferedImage[]> sprites;
     private final int[] numFrames = {
-            8, 8
+            8, 1
     };
 
     // animation actions
@@ -52,6 +54,8 @@ public class Player {
     private static final int JUMP = 1;
 
     private int currentAction;
+
+    private HashMap<Integer, AudioPlayer> sfx;
 
     protected Animation animation;
 
@@ -85,22 +89,16 @@ public class Player {
                                 "/Sprites/Player/spritesheet1.png"
                         )
                 );
-            }else if (character == OptionsState.CAT){
+            }else if (character == OptionsState.STONOG){
                 spritesheet = ImageIO.read(
                         getClass().getResourceAsStream(
-                                "/Sprites/Player/spritesheetcat.png"
+                                "/Sprites/Player/spritesheetstonog.png"
                         )
                 );
             }
 
             sprites = new ArrayList<BufferedImage[]>();
-            if(character == OptionsState.CAT){
-                pWIDTH = 100;
-                pHEIGHT = 50;
-            }else{
-                pWIDTH = 70;
-                pHEIGHT = 99;
-            }
+
             for(int i = 0; i < 2; i++) {
 
                 BufferedImage[] bi =

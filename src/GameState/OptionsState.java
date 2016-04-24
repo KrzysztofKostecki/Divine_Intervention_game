@@ -1,5 +1,6 @@
 package GameState;
 
+import Audio.AudioPlayer;
 import Main.GamePanel;
 import Scene.Platform;
 import Scene.Player;
@@ -9,6 +10,7 @@ import Utils.ExperienceManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 /**
  * Created by xxx on 2016-04-23.
@@ -31,14 +33,14 @@ public class OptionsState  extends GameState{
     public static int choosenCharacter;
     public final static int DEFAULT = 0;
     public final static int PAPAJ = 1;
-    public final static int CAT = 2;
+    public final static int STONOG = 2;
     //numbers of avaiable characters
     private Integer characters = 3;
     private static int currentCharacter;
 
     private PlayerMenu player;
 
-
+    private HashMap<Integer, AudioPlayer> sfx;
 
     public OptionsState(GameStateManager gsm){
 
@@ -62,6 +64,10 @@ public class OptionsState  extends GameState{
         catch(Exception e) {
             e.printStackTrace();
         }
+        sfx = new HashMap<Integer, AudioPlayer>();
+        sfx.put(PAPAJ,new AudioPlayer("/SFX/okrutnik.mp3"));
+        sfx.put(STONOG,new AudioPlayer("/SFX/stonog.mp3"));
+
         choosenCharacter = 0;
 
     }
@@ -69,9 +75,9 @@ public class OptionsState  extends GameState{
 
         player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         currentCharacter = choosenCharacter;
-        if(ExperienceManager.getExperience() > 2137){
-            characters = 2;
-        }
+        //if(ExperienceManager.getExperience() > 2137){
+        //    characters = 2;
+        //}
     }
     public void update(){
         bg.update();
@@ -112,25 +118,35 @@ public class OptionsState  extends GameState{
 
     private void selectCharacter(){
         if(currentCharacter == DEFAULT){
+            sfx.get(STONOG).stop();
+            sfx.get(PAPAJ).stop();
             player = new PlayerMenu(DEFAULT);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
         if(currentCharacter == PAPAJ){
+            sfx.get(STONOG).stop();
+            sfx.get(PAPAJ).play();
             player = new PlayerMenu(PAPAJ);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
-        if(currentCharacter == CAT){
-            player = new PlayerMenu(CAT);
+        if(currentCharacter == STONOG){
+            sfx.get(PAPAJ).stop();
+            sfx.get(STONOG).play();
+            player = new PlayerMenu(STONOG);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
     }
 
     public void keyPressed(int k){
         if(k == KeyEvent.VK_ENTER){
+            sfx.get(STONOG).stop();
+            sfx.get(PAPAJ).stop();
             select();
             choosenCharacter = currentCharacter;
         }
         if(k == KeyEvent.VK_ESCAPE){
+            sfx.get(STONOG).stop();
+            sfx.get(PAPAJ).stop();
             gsm.setState(GameStateManager.MENUSTATE);
         }
     }

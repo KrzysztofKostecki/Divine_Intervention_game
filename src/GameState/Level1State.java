@@ -1,5 +1,6 @@
 package GameState;
 
+import Audio.AudioPlayer;
 import Main.GamePanel;
 import Scene.Platform;
 import Scene.Player;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Random;
  */
 public class Level1State extends GameState {
     private Background bg;
-
+    private HashMap<Integer,AudioPlayer> bgmusic;
     private Player player;
 
     private ArrayList<Platform> platforms;
@@ -77,7 +79,12 @@ public class Level1State extends GameState {
         }catch (Exception e){
             e.printStackTrace();
         }
-        init();
+        bgmusic = new HashMap<Integer,AudioPlayer>();
+        bgmusic.put(OptionsState.DEFAULT,new AudioPlayer("/Music/level1-1.mp3"));
+        bgmusic.put(OptionsState.PAPAJ,new AudioPlayer("/Music/level1music.mp3"));
+        bgmusic.put(OptionsState.STONOG,new AudioPlayer("/Music/stonogmusic.mp3"));
+
+       // init();
 
     }
     @Override
@@ -87,7 +94,7 @@ public class Level1State extends GameState {
         paused = false;
         score = 0;
         currentspeed = STARTSPEED;
-
+        bgmusic.get(OptionsState.choosenCharacter).play();
         //Rog
         experience = ExperienceManager.getExperience();
         //Rog
@@ -123,6 +130,7 @@ public class Level1State extends GameState {
             ExperienceManager.saveExperience(score);
             //Rog
             //Kolybaczxjzcoidsaf END
+            bgmusic.get(OptionsState.choosenCharacter).stop();
             gsm.setState(GameStateManager.GAMEOVERSTATE);
         } else if(paused){
 
@@ -163,6 +171,7 @@ public class Level1State extends GameState {
                 player.setJumping(true);
                 player.setInAir(true);
                 platforms.get(0).setDX(-1.3);
+
 
             }
 
@@ -288,6 +297,7 @@ public class Level1State extends GameState {
         }
         if(k == KeyEvent.VK_ESCAPE){
             //game_over = false;
+            bgmusic.get(OptionsState.choosenCharacter).stop();
             gsm.setState(GameStateManager.MENUSTATE);
 
 
