@@ -3,6 +3,7 @@ package GameState;
 import Main.GamePanel;
 import Scene.Platform;
 import Scene.Player;
+import Scene.PlayerMenu;
 import TileMap.Background;
 
 import java.awt.*;
@@ -32,7 +33,7 @@ public class OptionsState  extends GameState{
     private Integer[] characters = {0,1};
     private static int currentCharacter;
 
-    private Player player;
+    private PlayerMenu player;
 
 
 
@@ -52,7 +53,7 @@ public class OptionsState  extends GameState{
                     70);
 
             font = new Font("Century Gothic", Font.PLAIN, 30);
-            player = new Player(DEFAULT);
+            player = new PlayerMenu(DEFAULT);
 
         }
         catch(Exception e) {
@@ -71,6 +72,7 @@ public class OptionsState  extends GameState{
         player.update();
         player.setVector(0,0);
         player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+
     }
     public void draw(java.awt.Graphics2D g){
 
@@ -104,11 +106,11 @@ public class OptionsState  extends GameState{
 
     private void selectCharacter(){
         if(currentCharacter == DEFAULT){
-            player = new Player(DEFAULT);
+            player = new PlayerMenu(DEFAULT);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
         if(currentCharacter == PAPAJ){
-            player = new Player(PAPAJ);
+            player = new PlayerMenu(PAPAJ);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
     }
@@ -123,7 +125,6 @@ public class OptionsState  extends GameState{
         }
     }
     public void keyReleased(int k){
-        System.out.println(currentCharacter);
         if(k == KeyEvent.VK_RIGHT){
             currentCharacter++;
             if(currentCharacter == characters.length){
