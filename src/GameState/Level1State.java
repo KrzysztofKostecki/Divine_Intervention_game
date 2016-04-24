@@ -4,7 +4,7 @@ import Main.GamePanel;
 import Scene.Platform;
 import Scene.Player;
 import TileMap.Background;
-import Utils.ExperienceState;
+import Utils.ExperienceManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -32,7 +32,6 @@ public class Level1State extends GameState {
 
 
     //class for experience handle
-    private ExperienceState xp;
     private int experience;
 
 
@@ -90,8 +89,7 @@ public class Level1State extends GameState {
         currentspeed = STARTSPEED;
 
         //Rog
-        xp = new ExperienceState();
-        experience = xp.getExperience();
+        experience = ExperienceManager.getExperience();
         //Rog
 
         player = new Player(OptionsState.choosenCharacter);
@@ -123,7 +121,7 @@ public class Level1State extends GameState {
         if(game_over){
             //Kolybacz HIGHSCORES
             HighScoreState.checkAndAddHighScore(score);
-            xp.saveExperience(score);
+            ExperienceManager.saveExperience(score);
             //Rog
             //Kolybaczxjzcoidsaf END
             gsm.setState(GameStateManager.GAMEOVERSTATE);

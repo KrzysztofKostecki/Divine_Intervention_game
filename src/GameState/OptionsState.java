@@ -5,6 +5,7 @@ import Scene.Platform;
 import Scene.Player;
 import Scene.PlayerMenu;
 import TileMap.Background;
+import Utils.ExperienceManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -30,7 +31,7 @@ public class OptionsState  extends GameState{
     public static int choosenCharacter;
     public final static int DEFAULT = 0;
     public final static int PAPAJ = 1;
-    private Integer[] characters = {0,1};
+    private Integer characters = 1;
     private static int currentCharacter;
 
     private PlayerMenu player;
@@ -66,6 +67,9 @@ public class OptionsState  extends GameState{
 
         player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         currentCharacter = 0;
+        if(ExperienceManager.getExperience() > 2137){
+            characters = 2;
+        }
     }
     public void update(){
         bg.update();
@@ -127,7 +131,7 @@ public class OptionsState  extends GameState{
     public void keyReleased(int k){
         if(k == KeyEvent.VK_RIGHT){
             currentCharacter++;
-            if(currentCharacter == characters.length){
+            if(currentCharacter == characters){
                 currentCharacter = 0;
             }
             selectCharacter();
@@ -135,7 +139,7 @@ public class OptionsState  extends GameState{
         if(k == KeyEvent.VK_LEFT){
             currentCharacter--;
             if(currentCharacter == -1){
-                currentCharacter = characters.length-1;
+                currentCharacter = characters-1;
             }
             selectCharacter();
         }
@@ -147,4 +151,5 @@ public class OptionsState  extends GameState{
         int y = (fm.getAscent() + (h - (fm.getAscent() + fm.getDescent())) / 2);
         g.drawString(s, x, y);
     }
+
 }

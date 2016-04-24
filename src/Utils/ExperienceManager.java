@@ -9,18 +9,16 @@ import java.util.Scanner;
 /**
  * Created by Artur on 23.04.2016.
  */
-public class ExperienceState {
+public class ExperienceManager {
 
-    private int experience;
+    private static int experience;
 
-    public ExperienceState(){
-
-        experience = this.loadExperience();
+    public static int getExperience(){
+        loadExperience();
+        return  experience;
     }
 
-    public int getExperience(){return  experience;}
-
-    public int loadExperience()
+    public static int loadExperience()
     {
         String load = "";
         try {
@@ -34,7 +32,7 @@ public class ExperienceState {
         return 0;
     }
 
-    public void saveExperience(int score){
+    public static void saveExperience(int score){
         experience += score;
         String f = "" + experience;
         try {
