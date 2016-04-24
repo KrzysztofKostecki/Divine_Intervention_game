@@ -18,7 +18,7 @@ public class MenuState extends GameState {
 			"Start",
 			"Options",
 			// Kolybacz HighScore
-			"High Score",
+			"High Score_test",
 			"Credits",
 			// Kolybacz
 			"Quit"
