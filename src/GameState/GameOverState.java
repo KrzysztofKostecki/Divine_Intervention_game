@@ -66,7 +66,7 @@ public class GameOverState extends GameState {
 		drawCenteredString("GAME OVER",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
 		g.setFont(font);
 
-		drawCenteredString("Your score: " + Integer.toString(Level1State.score),
+		drawCenteredString("Your score33: " + Integer.toString(Level1State.score),
 				GamePanel.WIDTH,
 				GamePanel.HEIGHT -300,g);
 
