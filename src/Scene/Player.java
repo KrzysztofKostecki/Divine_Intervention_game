@@ -1,5 +1,6 @@
 package Scene;
 
+import GameState.OptionsState;
 import Main.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -55,15 +56,36 @@ public class Player {
     private Animation animation;
 
 
-    public Player(){
+    public Player(int character){
         // load sprites
-        try {
+        setCharacter(character);
+        animation = new Animation();
+        currentAction = WALK;
+        animation.setFrames(sprites.get(WALK));
+        animation.setDelay(80);
+    }
 
+    public void setCharacter(int character){
+        try {
+            //just deafult if character is wrong
             BufferedImage spritesheet = ImageIO.read(
                     getClass().getResourceAsStream(
-                            "/Sprites/Player/spritesheet1.png"
+                            "/Sprites/Player/spritesheet.png"
                     )
             );
+            if(character == OptionsState.DEFAULT) {
+                spritesheet = ImageIO.read(
+                        getClass().getResourceAsStream(
+                                "/Sprites/Player/spritesheet.png"
+                        )
+                );
+            }else if (character == OptionsState.PAPAJ){
+                spritesheet = ImageIO.read(
+                        getClass().getResourceAsStream(
+                                "/Sprites/Player/spritesheet1.png"
+                        )
+                );
+            }
 
             sprites = new ArrayList<BufferedImage[]>();
             for(int i = 0; i < 2; i++) {
@@ -89,13 +111,7 @@ public class Player {
         catch(Exception e) {
             e.printStackTrace();
         }
-
-        animation = new Animation();
-        currentAction = WALK;
-        animation.setFrames(sprites.get(WALK));
-        animation.setDelay(80);
     }
-
     public void setPosition(double x, double y){
         this.x = x;
         this.y = y;

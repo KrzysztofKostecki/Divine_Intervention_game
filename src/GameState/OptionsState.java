@@ -1,6 +1,8 @@
 package GameState;
 
 import Main.GamePanel;
+import Scene.Platform;
+import Scene.Player;
 import TileMap.Background;
 
 import java.awt.*;
@@ -23,6 +25,17 @@ public class OptionsState  extends GameState{
 
     private Font font;
 
+    //for choose character
+    public static int choosenCharacter;
+    public final static int DEFAULT = 0;
+    public final static int PAPAJ = 1;
+    private Integer[] characters = {0,1};
+    private static int currentCharacter;
+
+    private Player player;
+
+
+
     public OptionsState(GameStateManager gsm){
 
         this.gsm = gsm;
@@ -39,15 +52,26 @@ public class OptionsState  extends GameState{
                     70);
 
             font = new Font("Century Gothic", Font.PLAIN, 30);
+            player = new Player(DEFAULT);
 
         }
         catch(Exception e) {
             e.printStackTrace();
         }
+        choosenCharacter = 0;
 
     }
-    public void init(){}
-    public void update(){bg.update();}
+    public void init(){
+
+        player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+        currentCharacter = 0;
+    }
+    public void update(){
+        bg.update();
+        player.update();
+        player.setVector(0,0);
+        player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+    }
     public void draw(java.awt.Graphics2D g){
 
         // draw bg
@@ -56,17 +80,18 @@ public class OptionsState  extends GameState{
         // draw title
         g.setColor(titleColor);
         g.setFont(titleFont);
-        g.drawString("Divine Intervention", 150, GamePanel.HEIGHT/2-200);
-
+        g.drawString("Choose Character", 180, GamePanel.HEIGHT/2-200);
+        player.draw(g);
         g.setFont(font);
+        drawCenteredString("<< >>",GamePanel.WIDTH,GamePanel.HEIGHT-50,g);
         for(int i = 0; i < options.length; i++) {
             if(i == currentChoice) {
-                g.setColor(Color.BLACK);
+                g.setColor(new Color(214, 156, 5));
             }
             else {
                 g.setColor(new Color(214, 156, 5));
             }
-            drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT-300  + i * 100,g);
+            drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT + 100  + i * 100,g);
         }
 
     }
@@ -77,12 +102,43 @@ public class OptionsState  extends GameState{
         }
     }
 
+    private void selectCharacter(){
+        if(currentCharacter == DEFAULT){
+            player = new Player(DEFAULT);
+            player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+        }
+        if(currentCharacter == PAPAJ){
+            player = new Player(PAPAJ);
+            player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+        }
+    }
+
     public void keyPressed(int k){
         if(k == KeyEvent.VK_ENTER){
             select();
+            choosenCharacter = currentCharacter;
+        }
+        if(k == KeyEvent.VK_ESCAPE){
+            gsm.setState(GameStateManager.MENUSTATE);
         }
     }
-    public void keyReleased(int k){}
+    public void keyReleased(int k){
+        System.out.println(currentCharacter);
+        if(k == KeyEvent.VK_RIGHT){
+            currentCharacter++;
+            if(currentCharacter == characters.length){
+                currentCharacter = 0;
+            }
+            selectCharacter();
+        }
+        if(k == KeyEvent.VK_LEFT){
+            currentCharacter--;
+            if(currentCharacter == -1){
+                currentCharacter = characters.length-1;
+            }
+            selectCharacter();
+        }
+    }
 
     public void drawCenteredString(String s, int w, int h, Graphics g) {
         FontMetrics fm = g.getFontMetrics();
