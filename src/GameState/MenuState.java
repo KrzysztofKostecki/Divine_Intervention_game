@@ -66,7 +66,7 @@ public class MenuState extends GameState {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Divine Intervention", 150, GamePanel.HEIGHT/2-200);
+		g.drawString("Divine Intervention2", 150, GamePanel.HEIGHT/2-200);
 		
 		// draw menu options
 		g.setFont(font);
