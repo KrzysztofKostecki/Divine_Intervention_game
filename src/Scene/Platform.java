@@ -1,5 +1,6 @@
 package Scene;
 
+import Main.Game;
 import Main.GamePanel;
 import javafx.geometry.Rectangle2D;
 
@@ -94,8 +95,8 @@ public class Platform{
         if(minY < 0){
             minY = 0;
         }
-        if (minY > GamePanel.HEIGHT){
-            minY = GamePanel.HEIGHT;
+        if(minY + pHEIGHT > GamePanel.HEIGHT){
+            minY = GamePanel.HEIGHT - pHEIGHT;
         }
     }
 

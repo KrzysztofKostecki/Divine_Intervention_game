@@ -45,7 +45,7 @@ public class HighScoreState extends GameState{
                     Font.BOLD,
                     70);
 
-            font = new Font("Century Gothic", Font.PLAIN, 30);
+            font = new Font("Century Gothic", Font.PLAIN, 20);
 
         }
         catch(Exception e) {
@@ -83,8 +83,8 @@ public class HighScoreState extends GameState{
             ArrayList<String> scores = getScores();
             g.setFont(font);
             for (int i = 0; i < scores.size(); i++) {
-                MenuState.drawCenteredString(Integer.toString(i+1)+ ": ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 100, g);
-                MenuState.drawCenteredString(scores.get(i), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 100, g);
+                MenuState.drawCenteredString(Integer.toString(i+1)+ ": ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString(scores.get(i), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
             }
         }
     }

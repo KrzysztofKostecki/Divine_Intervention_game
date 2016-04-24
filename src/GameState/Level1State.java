@@ -109,7 +109,7 @@ public class Level1State extends GameState {
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();
-        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330), random.nextInt(GamePanel.HEIGHT));
+        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330), random.nextInt(GamePanel.HEIGHT-(int)Platform.pHEIGHT));
         for(Platform i: platforms){
             i.setVector(0,0);
         }

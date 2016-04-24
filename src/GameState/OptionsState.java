@@ -31,7 +31,9 @@ public class OptionsState  extends GameState{
     public static int choosenCharacter;
     public final static int DEFAULT = 0;
     public final static int PAPAJ = 1;
-    private Integer characters = 1;
+    public final static int CAT = 2;
+    //numbers of avaiable characters
+    private Integer characters = 3;
     private static int currentCharacter;
 
     private PlayerMenu player;
@@ -66,7 +68,7 @@ public class OptionsState  extends GameState{
     public void init(){
 
         player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
-        currentCharacter = 0;
+        currentCharacter = choosenCharacter;
         if(ExperienceManager.getExperience() > 2137){
             characters = 2;
         }
@@ -115,6 +117,10 @@ public class OptionsState  extends GameState{
         }
         if(currentCharacter == PAPAJ){
             player = new PlayerMenu(PAPAJ);
+            player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
+        }
+        if(currentCharacter == CAT){
+            player = new PlayerMenu(CAT);
             player.setPosition(GamePanel.WIDTH/2 - Player.pWIDTH/2,200);
         }
     }

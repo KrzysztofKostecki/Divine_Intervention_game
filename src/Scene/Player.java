@@ -29,7 +29,7 @@ public class Player {
     }
     protected double dy;
 
-    private double delay = 100;
+    private double delay = 20;
 
     private double gravity = 0.3;
     private double jumpForce = 10;
@@ -44,7 +44,7 @@ public class Player {
     // animations
     private ArrayList<BufferedImage[]> sprites;
     private final int[] numFrames = {
-            8, 1
+            8, 8
     };
 
     // animation actions
@@ -85,9 +85,22 @@ public class Player {
                                 "/Sprites/Player/spritesheet1.png"
                         )
                 );
+            }else if (character == OptionsState.CAT){
+                spritesheet = ImageIO.read(
+                        getClass().getResourceAsStream(
+                                "/Sprites/Player/spritesheetcat.png"
+                        )
+                );
             }
 
             sprites = new ArrayList<BufferedImage[]>();
+            if(character == OptionsState.CAT){
+                pWIDTH = 100;
+                pHEIGHT = 50;
+            }else{
+                pWIDTH = 70;
+                pHEIGHT = 99;
+            }
             for(int i = 0; i < 2; i++) {
 
                 BufferedImage[] bi =
@@ -160,6 +173,7 @@ public class Player {
             animation.setFrames(sprites.get(JUMP));
         }
         animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+90));
+        //animation.setDelay(20);
         animation.update();
     }
 
