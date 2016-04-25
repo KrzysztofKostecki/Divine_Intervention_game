@@ -63,10 +63,13 @@ public class GameOverState extends GameState {
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		if (Level1State.score < HighScoreState.highest)
-			drawCenteredString("GAME OVER",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
-		else
-			drawCenteredString("NEW HIGHSCORE!",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
+		if (Level1State.score < HighScoreState.highest){
+            drawCenteredString("GAME OVER",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
+        } else {
+            drawCenteredString("NEW HIGHSCORE!",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
+            HighScoreState.highest = Level1State.score;
+        }
+
 		g.setFont(font);
 
 		drawCenteredString("Your score: " + Integer.toString(Level1State.score),
@@ -89,7 +92,6 @@ public class GameOverState extends GameState {
 
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.gameStates.get(GameStateManager.LEVEL1STATE).init();
 			gsm.setState(GameStateManager.LEVEL1STATE);
 		}
 		if(currentChoice == 1) {

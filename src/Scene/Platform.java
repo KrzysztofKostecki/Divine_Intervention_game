@@ -65,9 +65,12 @@ public class Platform{
     public void reload(int startHeight, double speed){
         Random random = new Random();
         minX = GamePanel.WIDTH;
-        int delta;//w przyszłości ma przechowywać wartość zakresu zależnego od prędkości gracza
-        //obliczanie położenia Y nowej platformy tak aby była max 300 w górę lub max 300 w dół od aktualnego położenia gracza, to 300 trzeba zastąpić deltą.
-        minY = random.nextInt(Math.abs((startHeight+300) - (startHeight - 300)))+startHeight-300;
+        int delta = (int)(2000/speed);
+        if(delta>300)delta=300;
+        //System.out.println("Speed: "+ speed + "Delta: " +delta);
+
+        //obliczanie położenia Y nowej platformy tak aby była max delta w górę lub max delta w dół od aktualnego położenia gracza.
+        minY = random.nextInt(Math.abs((startHeight+delta) - (startHeight-delta)))+(startHeight-delta);
     }
 
     public void setPosition(double x, double y){

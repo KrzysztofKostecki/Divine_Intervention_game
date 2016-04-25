@@ -51,9 +51,12 @@ public class MenuState extends GameState {
 		}
 		
 	}
-	
-	public void init() {}
-	
+
+	@Override
+	public void init() {
+
+	}
+
 	public void update() {
 		bg.update();
 	}
@@ -84,7 +87,6 @@ public class MenuState extends GameState {
 
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.gameStates.get(GameStateManager.LEVEL1STATE).init();
 			gsm.setState(GameStateManager.LEVEL1STATE);
 		}
 		if(currentChoice == 1) {
