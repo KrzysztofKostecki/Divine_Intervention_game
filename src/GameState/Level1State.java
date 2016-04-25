@@ -174,7 +174,7 @@ public class Level1State extends GameState {
 
             //success operations
             if(platforms.size()==2) {
-                if (success && Math.round(player.getX()) > platforms.get(1).getMaxX() - Platform.pWIDTH / 2) {
+                if (success && Math.round(player.getX()) > platforms.get(1).getMinX()) {
                     Platform start = platforms.remove(0);
                     int rand = (random.nextInt((GamePanel.HEIGHT-200 - 200))+200);
 

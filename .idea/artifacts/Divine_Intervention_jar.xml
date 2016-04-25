@@ -3,6 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Divine_Intervention_jar</output-path>
     <root id="archive" name="Divine_Intervention.jar">
       <element id="module-output" name="Divine_Intervention" />
+      <element id="dir-copy" path="$PROJECT_DIR$/Libs" />
+      <element id="library" level="project" name="jl1.0.1" />
+      <element id="library" level="project" name="mp3spi1.9.5" />
+      <element id="library" level="project" name="tritonus_share" />
     </root>
   </artifact>
 </component>
