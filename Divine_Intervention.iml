@@ -11,12 +11,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/libs" />
+          <root url="file://$MODULE_DIR$/Libs" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
         <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jl1.0.1 (2)" level="project" />
+    <orderEntry type="library" name="mp3spi1.9.5 (2)" level="project" />
+    <orderEntry type="library" name="tritonus_share (2)" level="project" />
   </component>
 </module>
