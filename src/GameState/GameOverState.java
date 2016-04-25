@@ -103,6 +103,9 @@ public class GameOverState extends GameState {
 	}
 	
 	public void keyPressed(int k) {
+
+	}
+	public void keyReleased(int k) {
 		if(k == KeyEvent.VK_ENTER){
 			select();
 		}
@@ -119,7 +122,6 @@ public class GameOverState extends GameState {
 			}
 		}
 	}
-	public void keyReleased(int k) {}
 
 	public static void drawCenteredString(String s, int w, int h, Graphics g) {
 		FontMetrics fm = g.getFontMetrics();

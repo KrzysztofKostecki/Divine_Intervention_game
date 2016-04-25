@@ -65,9 +65,6 @@ public class Level1State extends GameState {
     private Random random;
 
 
-
-
-
     public Level1State(GameStateManager gsm){
 
         this.gsm = gsm;
@@ -170,7 +167,7 @@ public class Level1State extends GameState {
             if (Math.round(player.getX()) > Platform.pWIDTH - 60 && Math.round(player.getX()) < Platform.pWIDTH - 50) {
                 player.setJumping(true);
                 player.setInAir(true);
-                platforms.get(0).setDX(-1.3);
+                platforms.get(0).setDX(-currentspeed/3);
 
 
             }
@@ -179,10 +176,12 @@ public class Level1State extends GameState {
             if(platforms.size()==2) {
                 if (success && Math.round(player.getX()) > platforms.get(1).getMaxX() - Platform.pWIDTH / 2) {
                     Platform start = platforms.remove(0);
+                    int rand = (random.nextInt((GamePanel.HEIGHT-200 - 200))+200);
 
                     platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
-                            (random.nextInt((GamePanel.HEIGHT-200 - 200))+200 - platforms.get(0).getMinY()) / changeSpeed);
-                    player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (GamePanel.HEIGHT / 2 - Player.pHEIGHT - platforms.get(0).getMinY()) / changeSpeed);
+                            (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
+                            (rand -platforms.get(0).getMinY()) / changeSpeed);
                     start.reload();
                     platforms.add(start);
                     platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
