@@ -1,15 +1,12 @@
 package Scene;
 
-import Main.Game;
 import Main.GamePanel;
-import javafx.geometry.Rectangle2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Created by Krzysztof on 21.04.2016.
@@ -65,10 +62,12 @@ public class Platform{
         minY = random.nextInt(GamePanel.HEIGHT-(int)pHEIGHT);
     }
 
-    public void reload(){
+    public void reload(int startHeight, double speed){
         Random random = new Random();
         minX = GamePanel.WIDTH;
-        minY = random.nextInt(GamePanel.HEIGHT-(int)pHEIGHT);
+        int delta;//w przyszłości ma przechowywać wartość zakresu zależnego od prędkości gracza
+        //obliczanie położenia Y nowej platformy tak aby była max 300 w górę lub max 300 w dół od aktualnego położenia gracza, to 300 trzeba zastąpić deltą.
+        minY = random.nextInt(Math.abs((startHeight+300) - (startHeight - 300)))+startHeight-300;
     }
 
     public void setPosition(double x, double y){

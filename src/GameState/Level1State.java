@@ -182,7 +182,7 @@ public class Level1State extends GameState {
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
                     player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
-                    start.reload();
+                    start.reload(rand,currentspeed);
                     platforms.add(start);
                     platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
                     bg.setVector((0 - platforms.get(0).getMinX()) / (changeSpeed*3),0);
