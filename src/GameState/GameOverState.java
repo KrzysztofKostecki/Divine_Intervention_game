@@ -5,6 +5,7 @@ import TileMap.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.PaintEvent;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,8 @@ public class GameOverState extends GameState {
 	private Font font;
 
 	private boolean isHighscore;
+
+	private boolean nameTyping;
 	ArrayList<String> nickname;
 
 	public GameOverState(GameStateManager gsm) {
@@ -56,6 +59,9 @@ public class GameOverState extends GameState {
 	public void init() {
 		isHighscore = false;
 		nickname = new ArrayList<>();
+		if(Level1State.score > HighScoreState.lowest){
+			isHighscore = true;
+		}
 	}
 	
 	public void update() {
@@ -75,7 +81,6 @@ public class GameOverState extends GameState {
         } else {
             drawCenteredString("NEW HIGHSCORE!",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
             HighScoreState.highest = Level1State.score;
-			isHighscore = true;
         }
 
 		g.setFont(font);
@@ -119,40 +124,49 @@ public class GameOverState extends GameState {
 		if(currentChoice == 2) {
 			System.exit(0);
 		}
-
-		// Kolybacz
 	}
 	
 	public void keyPressed(int k) {
 
 	}
 	public void keyReleased(int k) {
-		if(k == KeyEvent.VK_ENTER){
-			select();
-		}
-		if(k == KeyEvent.VK_UP) {
-			currentChoice--;
-			if(currentChoice == -1) {
-				currentChoice = options.length - 1;
+		if(isHighscore){
+			if (k == KeyEvent.VK_BACK_SPACE) {
+				if (nickname.size() != 0) {
+					nickname.remove(nickname.size() - 1);
+				}
 			}
-		}
-		if(k == KeyEvent.VK_DOWN) {
-			currentChoice++;
-			if(currentChoice == options.length) {
-				currentChoice = 0;
+			if (nickname.size() < 3) {
+				if (k != KeyEvent.VK_BACK_SPACE && Character.isAlphabetic(k)) nickname.add(KeyEvent.getKeyText(k));
 			}
-		}
-		if(k == KeyEvent.VK_BACK_SPACE){
-			if(nickname.size()!=0){
-				nickname.remove(nickname.size()-1);
-			}
-		}
-		//System.out.println(KeyEvent.getKeyText(k));
-		if(nickname.size()<3){
-			if(k != KeyEvent.VK_BACK_SPACE)
-			nickname.add(KeyEvent.getKeyText(k));
-		}
 
+			if (k == KeyEvent.VK_ENTER && nickname.size()==3) {
+				isHighscore = false;
+				String nick = "";
+				for(String i: nickname){
+					nick += i;
+				}
+				System.out.println("Score: "+ Level1State.score + " Nick: " + nick );
+				HighScoreState.checkAndAddHighScore(Level1State.score, nick);
+			}
+		}else {
+			if (k == KeyEvent.VK_ENTER) {
+				select();
+			}
+			if (k == KeyEvent.VK_UP) {
+				currentChoice--;
+				if (currentChoice == -1) {
+					currentChoice = options.length - 1;
+				}
+			}
+			if (k == KeyEvent.VK_DOWN) {
+				currentChoice++;
+				if (currentChoice == options.length) {
+					currentChoice = 0;
+				}
+			}
+
+		}
 
 	}
 

@@ -4,11 +4,10 @@ import Main.GamePanel;
 import TileMap.Background;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Created by Kuba on 02.04.2005.
@@ -19,7 +18,7 @@ public class HighScoreState extends GameState{
     private Color titleColor;
     private Font titleFont;
     private Font font;
-    private static ArrayList<String> scoresTable;
+    private static TreeMap<Integer,String> scoresTable;
 
     //for read
     public static int highest;
@@ -27,7 +26,7 @@ public class HighScoreState extends GameState{
 
     {
         if (getScores() == null)
-            scoresTable = new ArrayList<>();
+            scoresTable = new TreeMap<>(Collections.reverseOrder());
         else
             scoresTable = getScores();
     }
@@ -45,11 +44,15 @@ public class HighScoreState extends GameState{
                     Font.BOLD,
                     70);
 
-            font = new Font("Century Gothic", Font.PLAIN, 20);
+            font = new Font("Century Gothic", Font.PLAIN, 25);
 
         }
         catch(Exception e) {
             e.printStackTrace();
+        }
+        if(scoresTable.size()!=0){
+            highest = scoresTable.firstKey();
+            lowest = scoresTable.lastKey();
         }
 
     }
@@ -57,10 +60,9 @@ public class HighScoreState extends GameState{
     @Override
     public void init() {
         if (getScores() == null)
-            scoresTable = new ArrayList<>();
+            scoresTable = new TreeMap<>(Collections.reverseOrder());
         else
             scoresTable = getScores();
-
     }
 
     @Override
@@ -79,12 +81,15 @@ public class HighScoreState extends GameState{
         g.drawString("Divine Intervention", 150, GamePanel.HEIGHT/2-200);
         // draw menu options
         g.setFont(font);
-        if (getScores() != null) {
-            ArrayList<String> scores = getScores();
+        if (scoresTable != null) {
+            TreeMap<Integer,String> scores = scoresTable;
             g.setFont(font);
-            for (int i = 0; i < scores.size(); i++) {
-                MenuState.drawCenteredString(Integer.toString(i+1)+ ": ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 50, g);
-                MenuState.drawCenteredString(scores.get(i), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
+            int i = 0;
+            for (Map.Entry<Integer,String> entry : scores.entrySet()) {
+                MenuState.drawCenteredString(i+ ": ", GamePanel.WIDTH -200, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString(entry.getKey()+ " ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString(entry.getValue(), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
+                i++;
             }
         }
     }
@@ -100,46 +105,21 @@ public class HighScoreState extends GameState{
 
     }
 
-    //zwraca true jesli wynik, nadaje sie do wrzucenia do tablicy najlepszych wynikow
-    private static boolean checkCondition(int score)
-    {
-
-        //wynikow zerowych nie dodajemy
-        if (score == 0)
-            return false;
-        if (scoresTable.isEmpty())
-            return true;
-        for (int i=0; i<scoresTable.size(); i++)
-        {
-            // blokowanie dublowania wynikow
-            if (score == Integer.parseInt(scoresTable.get(i)))
-                return false;
-            // sprawdzanie czy rekord zostal pobity
-            if (score > Integer.parseInt(scoresTable.get(i)))
-               return true;
-        }
-        // pierwsze 10 elementow zostaje dodanych niezaleznie od tego czy sa lepsze od poprzednich
-        if (scoresTable.size() < 10)
-            return true;
-        return false;
-    }
     //funkcja sprawdzajaca czy wynik nadaje sie do tablicy i dodajaca go do tablicy
-    public static void checkAndAddHighScore(int score) {
-        if (checkCondition(score)) {
+    public static void checkAndAddHighScore(int score, String nickname) {
+            scoresTable.put(score,nickname);
             if (scoresTable.size() >= 10)
             {
-                scoresTable.remove(9);
+                scoresTable.remove(scoresTable.lastKey());
             }
-            scoresTable.add(Integer.toString(score));
-            Collections.sort(scoresTable, new StrCmp());
             save(scoresTable);
         }
-    }
+
 
 
 
     //zapis highcore jako ObjectOutStream
-    private static void save(ArrayList<String> scoresTable)
+    private static void save(TreeMap<Integer,String> scoresTable)
     {
         FileOutputStream fileon = null;
         try {
@@ -155,16 +135,16 @@ public class HighScoreState extends GameState{
         return;
     }
     //odczyt highscora z pliku
-    private ArrayList<String> getScores()
+    private TreeMap<Integer,String> getScores()
     {
-        ArrayList<String> scores;
+        TreeMap<Integer,String> scores;
         try {
             FileInputStream filein = new FileInputStream("highscore.jp2");
             ObjectInputStream ois = new ObjectInputStream(filein);
-            scores =(ArrayList<String>) ois.readObject();
+            scores =(TreeMap<Integer,String>) ois.readObject();
             ois.close();
-            highest = Integer.parseInt(scores.get(0));
-            lowest = Integer.parseInt(scores.get(scores.size()-1));
+            //highest = Integer.parseInt(scores.get(0));
+            //lowest = Integer.parseInt(scores.get(scores.size()-1));
             return scores;
         } catch (IOException e) {
             e.printStackTrace();
@@ -172,15 +152,5 @@ public class HighScoreState extends GameState{
             e.printStackTrace();
         }
         return null;
-    }
-}
-
-
-class StrCmp implements Comparator<String>{
-    public int compare(String s1, String s2)
-    {
-        int i1 = Integer.parseInt(s1);
-        int i2 = Integer.parseInt(s2);
-        return i2 - i1;
     }
 }

@@ -125,7 +125,6 @@ public class Level1State extends GameState {
     public void update() {
         if(game_over){
             //Kolybacz HIGHSCORES
-            HighScoreState.checkAndAddHighScore(score);
             ExperienceManager.saveExperience(score);
             //Rog
             //Kolybaczxjzcoidsaf END
