@@ -23,6 +23,7 @@ public class HighScoreState extends GameState{
 
     //for read
     public static int highest;
+    public static int lowest;
 
     {
         if (getScores() == null)
@@ -163,6 +164,7 @@ public class HighScoreState extends GameState{
             scores =(ArrayList<String>) ois.readObject();
             ois.close();
             highest = Integer.parseInt(scores.get(0));
+            lowest = Integer.parseInt(scores.get(scores.size()-1));
             return scores;
         } catch (IOException e) {
             e.printStackTrace();

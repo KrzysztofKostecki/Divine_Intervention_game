@@ -6,6 +6,8 @@ import Main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class Player {
     }
     protected double dy;
 
-    private double delay = 50;
+    private double delay = 20;
 
     private double gravity = 0.3;
     private double jumpForce = 10;
@@ -40,8 +42,8 @@ public class Player {
     public boolean INAIR;
 
     //private boolean JUMPING;
-    public static double pWIDTH = 70;
-    public static double pHEIGHT = 99;
+    public static double pWIDTH = 70*GamePanel.SCALE;
+    public static double pHEIGHT = 99*GamePanel.SCALE;
 
     // animations
     private ArrayList<BufferedImage[]> sprites;
@@ -106,14 +108,14 @@ public class Player {
                 BufferedImage[] bi =
                         new BufferedImage[numFrames[i]];
 
+
                 for(int j = 0; j < numFrames[i]; j++) {
                     bi[j] = spritesheet.getSubimage(
-                            j * (int)pWIDTH,
-                            i * (int)pHEIGHT,
-                            (int)pWIDTH,
-                            (int)pHEIGHT
+                            j * (int)(pWIDTH/GamePanel.SCALE),
+                            i * (int)(pHEIGHT/GamePanel.SCALE),
+                            (int)(pWIDTH/GamePanel.SCALE),
+                            (int)(pHEIGHT/GamePanel.SCALE)
                     );
-
                 }
 
                 sprites.add(bi);
@@ -175,7 +177,7 @@ public class Player {
             currentAction = JUMP;
             animation.setFrames(sprites.get(JUMP));
         }
-        animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+(2*delay)));
+        animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+90));
         //animation.setDelay(20);
         animation.update();
     }

@@ -5,6 +5,7 @@ import TileMap.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * Created by Krzysztof on 05.04.2016.
@@ -24,6 +25,9 @@ public class GameOverState extends GameState {
 	private Font titleFont;
 
 	private Font font;
+
+	private boolean isHighscore;
+	ArrayList<String> nickname;
 
 	public GameOverState(GameStateManager gsm) {
 		
@@ -49,7 +53,10 @@ public class GameOverState extends GameState {
 		
 	}
 	
-	public void init() {}
+	public void init() {
+		isHighscore = false;
+		nickname = new ArrayList<>();
+	}
 	
 	public void update() {
 		bg.update();
@@ -68,6 +75,7 @@ public class GameOverState extends GameState {
         } else {
             drawCenteredString("NEW HIGHSCORE!",GamePanel.WIDTH,GamePanel.HEIGHT -450,g);
             HighScoreState.highest = Level1State.score;
+			isHighscore = true;
         }
 
 		g.setFont(font);
@@ -86,6 +94,17 @@ public class GameOverState extends GameState {
 				g.setColor(Color.BLACK);
 			}
 			drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT-150  + i * 100,g);
+		}
+
+		if(isHighscore){
+			g.setColor(new Color(214, 156, 5));
+			g.fillRect(GamePanel.WIDTH/2-250,GamePanel.HEIGHT/2 -100,500,200);
+			g.setColor(Color.BLACK);
+			g.setFont(titleFont);
+			for (int i1 = 0; i1 < nickname.size(); i1++) {
+				drawCenteredString(nickname.get(i1), GamePanel.WIDTH - 100 + i1*100,GamePanel.HEIGHT ,g);
+			}
+			g.setFont(font);
 		}
 		
 	}
@@ -123,6 +142,18 @@ public class GameOverState extends GameState {
 				currentChoice = 0;
 			}
 		}
+		if(k == KeyEvent.VK_BACK_SPACE){
+			if(nickname.size()!=0){
+				nickname.remove(nickname.size()-1);
+			}
+		}
+		//System.out.println(KeyEvent.getKeyText(k));
+		if(nickname.size()<3){
+			if(k != KeyEvent.VK_BACK_SPACE)
+			nickname.add(KeyEvent.getKeyText(k));
+		}
+
+
 	}
 
 	public static void drawCenteredString(String s, int w, int h, Graphics g) {

@@ -41,14 +41,16 @@ public class Level1State extends GameState {
     public static int score;
     //speed
     private double currentspeed;
-    private final double STARTSPEED = 4;
+    private final double STARTSPEED = 4*GamePanel.SCALE;
 
     //change speed
-    private final int changeSpeed = 50;
+    private final int changeSpeed = (int)(50/GamePanel.SCALE);
     //position of landing
-   private double acceleration = 0.0006;
+   private double acceleration = 0.0006*GamePanel.SCALE;
     //platform movement speed
-    private double platformSpeed = 6;
+    private double platformSpeed = 6*GamePanel.SCALE;
+    //platform safezone
+    private int platformSafezone = (int)(200*GamePanel.SCALE);
     //Pause
     private int currentChoice = 0;
     private String[] options = {
@@ -113,7 +115,7 @@ public class Level1State extends GameState {
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();
-        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330), random.nextInt(GamePanel.HEIGHT-(int)Platform.pHEIGHT));
+        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330*GamePanel.SCALE), random.nextInt(GamePanel.HEIGHT-(int)Platform.pHEIGHT));
         for(Platform i: platforms){
             i.setVector(0,0);
         }
@@ -139,7 +141,7 @@ public class Level1State extends GameState {
             }
 
             collision();
-            if(platforms.get(0).getMinX() < 0 && platforms.get(1).getMaxX() < GamePanel.WIDTH-330){
+            if(platforms.get(0).getMinX() < 0 && platforms.get(1).getMaxX() < GamePanel.WIDTH-330*GamePanel.SCALE){
                 settingup = false;
                 platforms.get(0).setVector(0,0);
                 platforms.get(1).setDX(0);
@@ -149,6 +151,7 @@ public class Level1State extends GameState {
             }
         }else {
             //bg.update();
+            bgmusic.get(OptionsState.choosenCharacter).play();
             player.update();
             currentspeed += acceleration;
             player.setSpeed(currentspeed);
@@ -164,7 +167,7 @@ public class Level1State extends GameState {
             collision();
 
             //check fo jumpzone
-            if (Math.round(player.getX()) > Platform.pWIDTH - 60 && Math.round(player.getX()) < Platform.pWIDTH - 50) {
+            if (Math.round(player.getX()) > Platform.pWIDTH - 60*GamePanel.SCALE && Math.round(player.getX()) < Platform.pWIDTH - 50*GamePanel.SCALE) {
                 player.setJumping(true);
                 player.setInAir(true);
                 platforms.get(0).setDX(-currentspeed/3);
@@ -176,7 +179,7 @@ public class Level1State extends GameState {
             if(platforms.size()==2) {
                 if (success && Math.round(player.getX()) > platforms.get(1).getMinX()) {
                     Platform start = platforms.remove(0);
-                    int rand = (random.nextInt((GamePanel.HEIGHT-200 - 200))+200);
+                    int rand = (random.nextInt((GamePanel.HEIGHT-platformSafezone - platformSafezone))+platformSafezone);
 
                     platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
                             (rand -platforms.get(0).getMinY()) / changeSpeed);

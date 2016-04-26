@@ -1,6 +1,8 @@
 package Scene;
 
 import Main.GamePanel;
+import Utils.Scaler;
+import javafx.scene.transform.Scale;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -37,8 +39,8 @@ public class Platform{
 
 
 
-    public static double pWIDTH = 165;
-    public static double pHEIGHT = 60;
+    public static double pWIDTH = (int)(165* GamePanel.SCALE);
+    public static double pHEIGHT = (int)(60*GamePanel.SCALE);
 
 
 
@@ -49,9 +51,6 @@ public class Platform{
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/Scene/platformsprite3.png"));
-            subimage = image.getSubimage(0,0,
-                    (int)pWIDTH,
-                    (int)pHEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,6 +104,7 @@ public class Platform{
     public void draw(Graphics2D g) {
 
         g.setColor(new Color(0x35BB15));
+        //g.fillRect(0,0,GamePanel.WIDTH,GamePanel.HEIGHT);
         g.drawImage(image,(int) minX, (int) minY, null);
     }
 
