@@ -54,7 +54,7 @@ public class Platform{
     public Platform(){
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/Scene/platformsprite.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/Scene/platformsprite3.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
