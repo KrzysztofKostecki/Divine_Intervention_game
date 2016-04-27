@@ -110,8 +110,6 @@ public class Level1State extends GameState {
             platforms.add(new Platform());
             //platforma którą poruszamy, index 1
             platforms.add(new Platform());
-
-
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();

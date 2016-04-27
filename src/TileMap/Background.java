@@ -1,7 +1,6 @@
 package TileMap;
 
 import Main.GamePanel;
-import Utils.Scaler;
 
 import java.awt.*;
 import java.awt.image.*;
@@ -26,8 +25,6 @@ public class Background {
 			image = ImageIO.read(
                     getClass().getResourceAsStream(s)
             );
-			Scaler sw = new Scaler(image,GamePanel.WIDTH,GamePanel.HEIGHT);
-			image = sw.getScalledImage();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

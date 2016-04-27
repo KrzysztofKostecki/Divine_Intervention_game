@@ -33,7 +33,7 @@ public class Player {
     }
     protected double dy;
 
-    private double delay = 20;
+    private double delay = 50;
 
     private double gravity = 0.3;
     private double jumpForce = 10;
@@ -177,7 +177,7 @@ public class Player {
             currentAction = JUMP;
             animation.setFrames(sprites.get(JUMP));
         }
-        animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+90));
+        animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+(2*delay)));
         //animation.setDelay(20);
         animation.update();
     }

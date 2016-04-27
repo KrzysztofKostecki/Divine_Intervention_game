@@ -1,8 +1,6 @@
 package Scene;
 
 import Main.GamePanel;
-import Utils.Scaler;
-import javafx.scene.transform.Scale;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
