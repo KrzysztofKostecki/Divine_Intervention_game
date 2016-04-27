@@ -9,9 +9,6 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.*;
 
-/**
- * Created by Kuba on 02.04.2005.
- */
 public class HighScoreState extends GameState{
 
     private Background bg;
@@ -86,7 +83,7 @@ public class HighScoreState extends GameState{
             g.setFont(font);
             int i = 0;
             for (Map.Entry<Integer,String> entry : scores.entrySet()) {
-                MenuState.drawCenteredString(i+ ": ", GamePanel.WIDTH -200, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString((i+1)+ ": ", GamePanel.WIDTH -200, GamePanel.HEIGHT - 300 + i * 50, g);
                 MenuState.drawCenteredString(entry.getKey()+ " ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 50, g);
                 MenuState.drawCenteredString(entry.getValue(), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
                 i++;
@@ -108,10 +105,12 @@ public class HighScoreState extends GameState{
     //funkcja sprawdzajaca czy wynik nadaje sie do tablicy i dodajaca go do tablicy
     public static void checkAndAddHighScore(int score, String nickname) {
             scoresTable.put(score,nickname);
-            if (scoresTable.size() >= 10)
+            if (scoresTable.size() > 10)
             {
                 scoresTable.remove(scoresTable.lastKey());
             }
+            highest = scoresTable.firstKey();
+            lowest = scoresTable.lastKey();
             save(scoresTable);
         }
 
@@ -143,8 +142,10 @@ public class HighScoreState extends GameState{
             ObjectInputStream ois = new ObjectInputStream(filein);
             scores =(TreeMap<Integer,String>) ois.readObject();
             ois.close();
-            //highest = Integer.parseInt(scores.get(0));
-            //lowest = Integer.parseInt(scores.get(scores.size()-1));
+            if(scoresTable!=null){
+                highest = scoresTable.firstKey();
+                lowest = scoresTable.lastKey();
+            }
             return scores;
         } catch (IOException e) {
             e.printStackTrace();
