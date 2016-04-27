@@ -42,8 +42,8 @@ public class Player {
     public boolean INAIR;
 
     //private boolean JUMPING;
-    public static double pWIDTH = 70*GamePanel.SCALE;
-    public static double pHEIGHT = 99*GamePanel.SCALE;
+    public static double pWIDTH = 51*GamePanel.SCALE;
+    public static double pHEIGHT = 72*GamePanel.SCALE;
 
     // animations
     private ArrayList<BufferedImage[]> sprites;
@@ -78,13 +78,13 @@ public class Player {
             //just deafult if character is wrong
             BufferedImage spritesheet = ImageIO.read(
                     getClass().getResourceAsStream(
-                            "/Sprites/Player/spritesheet.png"
+                            "/Sprites/Player/spritesheet_small.png"
                     )
             );
             if(character == OptionsState.DEFAULT) {
                 spritesheet = ImageIO.read(
                         getClass().getResourceAsStream(
-                                "/Sprites/Player/spritesheet.png"
+                                "/Sprites/Player/spritesheet_small.png"
                         )
                 );
             }else if (character == OptionsState.PAPAJ){

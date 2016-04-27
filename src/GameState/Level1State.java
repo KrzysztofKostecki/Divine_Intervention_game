@@ -141,10 +141,7 @@ public class Level1State extends GameState {
 
             if(platforms.get(0).getMinX() < 100 && platforms.get(1).getMaxX() < GamePanel.WIDTH-230*GamePanel.SCALE){
                 settingup = false;
-
-
                 platforms.get(2).reload(rand,currentspeed);
-
 
                 platforms.get(0).setVector(0,0);
                 platforms.get(1).setDX(0);
@@ -173,9 +170,6 @@ public class Level1State extends GameState {
             if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && Math.round(player.getX()) < platforms.get(0).getMaxX()-10) {
                 player.setJumping(true);
                 player.setInAir(true);
-                //platforms.get(0).setDX(-currentspeed/3);
-
-
             }
 
             //success operations
@@ -185,15 +179,13 @@ public class Level1State extends GameState {
                     platforms.add(start);
                     rand = (random.nextInt((GamePanel.HEIGHT-platformSafezone - 350))+350);
 
-
-                    System.out.print("Rand: " + rand+ " ");
                     platforms.get(0).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
                     platforms.get(1).reload(rand,currentspeed);
-                    platforms.get(1).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
-                            0);
-                    platforms.get(2).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
-                            0);
+
+                    platforms.get(1).setVector((0 - platforms.get(1).getMinX()) / changeSpeed, 0);
+                    platforms.get(2).setVector((0 - platforms.get(1).getMinX()) / changeSpeed, 0);
+
                     player.setVector((0 - platforms.get(1).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
                     bg.setVector(-currentspeed/2,0);
                     score++;
