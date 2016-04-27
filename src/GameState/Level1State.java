@@ -44,7 +44,7 @@ public class Level1State extends GameState {
     private final double STARTSPEED = 4*GamePanel.SCALE;
 
     //change speed
-    private final int changeSpeed = (int)(50/GamePanel.SCALE);
+    private final int changeSpeed = (int)(100/GamePanel.SCALE);
     //position of landing
    private double acceleration = 0.0006*GamePanel.SCALE;
     //platform movement speed
@@ -65,7 +65,9 @@ public class Level1State extends GameState {
 
     //random just for usage in many places
     private Random random;
+    private int rand;
 
+    private int MOVEABLEPLATFORM = 1;
 
     public Level1State(GameStateManager gsm){
 
@@ -105,27 +107,25 @@ public class Level1State extends GameState {
         if(platforms == null){
             platforms = new ArrayList<Platform>();
         }
-        if(platforms.size() != 2){
+        if(platforms.size() != 3){
             //platforma startowa, intex 0
             platforms.add(new Platform());
             //platforma którą poruszamy, index 1
+            platforms.add(new Platform());
+            //platforma po prawej od obszaru gry, index 2
             platforms.add(new Platform());
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();
         platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330*GamePanel.SCALE), random.nextInt(GamePanel.HEIGHT-(int)Platform.pHEIGHT));
-        for(Platform i: platforms){
-            i.setVector(0,0);
-        }
+        platforms.get(2).reload((int)platforms.get(1).getMinY(),currentspeed);
+        for(Platform i: platforms){i.setVector(0,0);}
         }
 
     @Override
     public void update() {
         if(game_over){
-            //Kolybacz HIGHSCORES
             ExperienceManager.saveExperience(score);
-            //Rog
-            //Kolybaczxjzcoidsaf END
             bgmusic.get(OptionsState.choosenCharacter).stop();
             gsm.setState(GameStateManager.GAMEOVERSTATE);
         } else if(paused){
@@ -138,12 +138,19 @@ public class Level1State extends GameState {
             }
 
             collision();
-            if(platforms.get(0).getMinX() < 0 && platforms.get(1).getMaxX() < GamePanel.WIDTH-330*GamePanel.SCALE){
+
+            if(platforms.get(0).getMinX() < 100 && platforms.get(1).getMaxX() < GamePanel.WIDTH-230*GamePanel.SCALE){
                 settingup = false;
+
+                rand = (random.nextInt((GamePanel.HEIGHT-platformSafezone - platformSafezone))+platformSafezone);
+                platforms.get(2).reload(rand,currentspeed);
+
+
                 platforms.get(0).setVector(0,0);
                 platforms.get(1).setDX(0);
-                player.setVector(currentspeed,0);
+                platforms.get(2).setVector(0,0);
 
+                player.setVector(currentspeed,0);
                 bg.setVector(0,0);
             }
         }else {
@@ -152,40 +159,40 @@ public class Level1State extends GameState {
             player.update();
             currentspeed += acceleration;
             player.setSpeed(currentspeed);
-            if (platforms.size() == 2 )
-                for (Platform i : platforms) {
+            for (Platform i : platforms) {
                     i.update();
-                }
+            }
             //check for gameover
             if (player.getY() + Player.pHEIGHT > GamePanel.HEIGHT) {
                 game_over = true;
             }
             //chceck for collision
             collision();
-
+            System.out.println("X:" + platforms.get(2).getMinX()+ " Y:" + platforms.get(2).getMinY()+" DX:" + platforms.get(2).getDX()+" DY:" + platforms.get(2).getDX());
             //check fo jumpzone
-            if (Math.round(player.getX()) > Platform.pWIDTH - 60*GamePanel.SCALE && Math.round(player.getX()) < Platform.pWIDTH - 50*GamePanel.SCALE) {
+            if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && Math.round(player.getX()) < platforms.get(0).getMaxX()-10) {
                 player.setJumping(true);
                 player.setInAir(true);
-                platforms.get(0).setDX(-currentspeed/3);
+                //platforms.get(0).setDX(-currentspeed/3);
 
 
             }
 
             //success operations
-            if(platforms.size()==2) {
+            if(platforms.size()==3) {
                 if (success && Math.round(player.getX()) > platforms.get(1).getMinX()) {
                     Platform start = platforms.remove(0);
-                    int rand = (random.nextInt((GamePanel.HEIGHT-platformSafezone - platformSafezone))+platformSafezone);
-
-                    platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
-                            (rand -platforms.get(0).getMinY()) / changeSpeed);
-                    player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
-                            (rand -platforms.get(0).getMinY()) / changeSpeed);
-                    start.reload(rand,currentspeed);
                     platforms.add(start);
-                    platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
-                    bg.setVector((0 - platforms.get(0).getMinX()) / (changeSpeed*3),0);
+
+
+                    platforms.get(0).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
+                            (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    platforms.get(1).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
+                            0);
+                    platforms.get(2).setVector((0 - platforms.get(1).getMinX()) / changeSpeed,
+                            0);
+                    player.setVector((0 - platforms.get(1).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    bg.setVector(-currentspeed/2,0);
                     score++;
                     success = false;
                     settingup = true;
@@ -198,7 +205,7 @@ public class Level1State extends GameState {
 
     public void collision() {
         if (platforms != null) {
-            if (platforms.size() == 2) {
+            if (platforms.size() == 3) {
                 for (Platform i : platforms) {
                     Line2D.Double tempMaxYLine = new Line2D.Double(i.getMinX(), i.getMinY(), i.getMaxX(), i.getMinY());
                     Line2D.Double tempMinYLine = new Line2D.Double(i.getMinX(), (i.getMinY()+40) , i.getMaxX(), (i.getMinY()+40) );
@@ -227,8 +234,11 @@ public class Level1State extends GameState {
         g.drawString("Best: "+Integer.toString(HighScoreState.highest),GamePanel.WIDTH-200,70);
 
         if(platforms.size() != 0) {
+            int count = 0;
             for (Platform i : platforms) {
+                g.drawString(Integer.toString(count),(int)i.getMinX(),(int)i.getMinY());
                 i.draw(g);
+                count++;
             }
         }
         player.draw(g);
@@ -268,11 +278,11 @@ public class Level1State extends GameState {
             }
         }
         if(platforms!=null) {
-            if (platforms.size()==2) {
-                if (k == KeyEvent.VK_W) platforms.get(1).setDY(-platformSpeed);
-                if (k == KeyEvent.VK_S) platforms.get(1).setDY(platformSpeed);
-                if (k == KeyEvent.VK_UP) platforms.get(1).setDY(-platformSpeed);
-                if (k == KeyEvent.VK_DOWN) platforms.get(1).setDY(platformSpeed);
+            if (platforms.size()==3) {
+                if (k == KeyEvent.VK_W) platforms.get(MOVEABLEPLATFORM).setDY(-platformSpeed);
+                if (k == KeyEvent.VK_S) platforms.get(MOVEABLEPLATFORM).setDY(platformSpeed);
+                if (k == KeyEvent.VK_UP) platforms.get(MOVEABLEPLATFORM).setDY(-platformSpeed);
+                if (k == KeyEvent.VK_DOWN) platforms.get(MOVEABLEPLATFORM).setDY(platformSpeed);
             }
         }
     }
@@ -280,7 +290,7 @@ public class Level1State extends GameState {
     @Override
     public void keyReleased(int k) {
         if(platforms!=null) {
-            if (platforms.size() == 2) {
+            if (platforms.size() == 3) {
                 if (k == KeyEvent.VK_W) platforms.get(1).setDY(0);
                 if (k == KeyEvent.VK_S) platforms.get(1).setDY(0);
                 if (k == KeyEvent.VK_UP) platforms.get(1).setDY(0);

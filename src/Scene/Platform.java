@@ -32,7 +32,13 @@ public class Platform{
         return minY+pHEIGHT;
     }
     private double dx;
+    public double getDX() {
+        return dx;
+    }
     private double dy;
+    public double getDY() {
+        return dy;
+    }
 
 
 
