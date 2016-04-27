@@ -83,9 +83,10 @@ public class HighScoreState extends GameState{
             g.setFont(font);
             int i = 0;
             for (Map.Entry<Integer,String> entry : scores.entrySet()) {
-                MenuState.drawCenteredString((i+1)+ ": ", GamePanel.WIDTH -200, GamePanel.HEIGHT - 300 + i * 50, g);
-                MenuState.drawCenteredString(entry.getKey()+ " ", GamePanel.WIDTH -100, GamePanel.HEIGHT - 300 + i * 50, g);
-                MenuState.drawCenteredString(entry.getValue(), GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString((i+1)+ ": ", GamePanel.WIDTH -300, GamePanel.HEIGHT - 300 + i * 50, g);
+
+                MenuState.drawCenteredString(entry.getValue(), GamePanel.WIDTH-150, GamePanel.HEIGHT - 300 + i * 50, g);
+                MenuState.drawCenteredString(entry.getKey()+ " ", GamePanel.WIDTH, GamePanel.HEIGHT - 300 + i * 50, g);
                 i++;
             }
         }

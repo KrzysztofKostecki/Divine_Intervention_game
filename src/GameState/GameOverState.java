@@ -107,7 +107,7 @@ public class GameOverState extends GameState {
 			g.setColor(Color.BLACK);
 			g.setFont(titleFont);
 			for (int i1 = 0; i1 < nickname.size(); i1++) {
-				drawCenteredString(nickname.get(i1), GamePanel.WIDTH - 100 + i1*100,GamePanel.HEIGHT ,g);
+				drawCenteredString(nickname.get(i1), GamePanel.WIDTH - 150 + i1*150,GamePanel.HEIGHT ,g);
 			}
 			g.setFont(font);
 		}
