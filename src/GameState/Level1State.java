@@ -38,7 +38,7 @@ public class Level1State extends GameState {
 
 
     //score
-    public static int score;
+    static int score;
     //speed
     private double currentspeed;
     private final double STARTSPEED = 4*GamePanel.SCALE;
@@ -138,15 +138,15 @@ public class Level1State extends GameState {
 
             collision();
 
-            if(platforms.get(0).getMinX() < 0 ){
+            if(platforms.get(0).getMinX() < 100 ){
                 platforms.get(0).setVector(0,0);
             }
-            if(platforms.get(1).getMaxX() < GamePanel.WIDTH-330*GamePanel.SCALE){
+            if(platforms.get(1).getMaxX() < GamePanel.WIDTH-230*GamePanel.SCALE){
                 settingup = false;
                 platforms.get(2).setPosition(GamePanel.WIDTH,360);
 
-
-                platforms.get(1).setDX(0);
+                platforms.get(0).setVector(0,0);
+                platforms.get(1).setVector(0,0);
                 platforms.get(2).setVector(0,0);
 
                 player.setVector(currentspeed,0);
@@ -185,8 +185,8 @@ public class Level1State extends GameState {
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
                     platforms.get(1).reload(rand,currentspeed);
 
-                    platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
-                    platforms.get(2).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, 0);
+                    platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,  (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    platforms.get(2).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
 
                     player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
                     bg.setVector(-currentspeed/2,0);
@@ -231,8 +231,15 @@ public class Level1State extends GameState {
         g.drawString("Best: "+Integer.toString(HighScoreState.highest),GamePanel.WIDTH-200,70);
 
         if(platforms.size() != 0) {
+            int count = 0;
             for (Platform i : platforms) {
-                i.draw(g);
+                if(count == 1){
+                   i.drawCurrent(g);
+                }else{
+                    i.draw(g);
+                }
+
+                count++;
             }
         }
         player.draw(g);

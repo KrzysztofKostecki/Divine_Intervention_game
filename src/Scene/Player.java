@@ -159,7 +159,6 @@ public class Player {
     }
 
     public void update() {
-        System.out.println(dy);
         dy += gravity;
         x += dx;
         y += dy;
@@ -176,7 +175,7 @@ public class Player {
             animation.setFrames(sprites.get(WALK));
         }else if(INAIR && currentAction!=JUMP && dy>0) {
             currentAction = JUMP;
-                animation.setFrames(sprites.get(FALL));
+            animation.setFrames(sprites.get(FALL));
         }
         else if(INAIR && currentAction!=JUMP && dy<0)
             animation.setFrames(sprites.get(JUMP));

@@ -14,6 +14,7 @@ import java.util.Random;
 public class Platform{
 
     private BufferedImage image;
+    private BufferedImage image2;
     private BufferedImage subimage;
     private double minX;
 
@@ -55,6 +56,7 @@ public class Platform{
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/Scene/platformsprite3.png"));
+            image2 = ImageIO.read(getClass().getResourceAsStream("/Scene/platformsprite4.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +70,7 @@ public class Platform{
     public void reload(int startHeight, double speed){
         Random random = new Random();
         minX = GamePanel.WIDTH;
-        int delta = (int)(2000/speed);
+        int delta = (int)(1000/speed);
         if(delta>360)delta=360;
         //obliczanie położenia Y nowej platformy tak aby była max delta w górę lub max delta w dół od aktualnego położenia gracza.
         minY = random.nextInt((startHeight+delta) - (startHeight-delta))+(startHeight-delta);
@@ -105,6 +107,10 @@ public class Platform{
 
     public void draw(Graphics2D g) {
         g.drawImage(image,(int) minX, (int) minY, null);
+    }
+
+    public void drawCurrent(Graphics2D g) {
+        g.drawImage(image2,(int) minX, (int) minY, null);
     }
 
     public boolean intersects(double x, double y, double w, double h){
