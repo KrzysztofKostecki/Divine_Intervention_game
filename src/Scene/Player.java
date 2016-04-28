@@ -33,7 +33,7 @@ public class Player {
     }
     protected double dy;
 
-    private double delay = 50;
+    private double delay = 40;
 
     private double gravity = 0.3;
     private double jumpForce = 10;
@@ -48,12 +48,13 @@ public class Player {
     // animations
     private ArrayList<BufferedImage[]> sprites;
     private final int[] numFrames = {
-            8, 1
+            8, 1, 1
     };
 
     // animation actions
     private static final int WALK = 0;
     private static final int JUMP = 1;
+    private static final int FALL = 2;
 
     private int currentAction;
 
@@ -103,7 +104,7 @@ public class Player {
 
             sprites = new ArrayList<BufferedImage[]>();
 
-            for(int i = 0; i < 2; i++) {
+            for(int i = 0; i < numFrames.length; i++) {
 
                 BufferedImage[] bi =
                         new BufferedImage[numFrames[i]];
@@ -158,7 +159,7 @@ public class Player {
     }
 
     public void update() {
-
+        System.out.println(dy);
         dy += gravity;
         x += dx;
         y += dy;
@@ -173,10 +174,12 @@ public class Player {
         if(!INAIR && currentAction!=WALK){
             currentAction = WALK;
             animation.setFrames(sprites.get(WALK));
-        }else if(INAIR && currentAction!=JUMP) {
+        }else if(INAIR && currentAction!=JUMP && dy>0) {
             currentAction = JUMP;
-            animation.setFrames(sprites.get(JUMP));
+                animation.setFrames(sprites.get(FALL));
         }
+        else if(INAIR && currentAction!=JUMP && dy<0)
+            animation.setFrames(sprites.get(JUMP));
         animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+(2*delay)));
         //animation.setDelay(20);
         animation.update();

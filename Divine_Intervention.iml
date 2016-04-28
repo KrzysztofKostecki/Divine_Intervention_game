@@ -36,5 +36,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jl1.0.1 (2)" level="project" />
+    <orderEntry type="library" name="mp3spi1.9.5 (2)" level="project" />
+    <orderEntry type="library" name="tritonus_share " level="project" />
   </component>
 </module>
