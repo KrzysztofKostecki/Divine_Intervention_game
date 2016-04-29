@@ -31,6 +31,9 @@ public class Player {
     public double getDX(){
         return dx;
     }
+    public void setDX(double dx){
+        this.dx = dx;
+    }
     protected double dy;
 
     private double delay = 40;

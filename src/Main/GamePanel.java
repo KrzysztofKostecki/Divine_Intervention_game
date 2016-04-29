@@ -15,7 +15,7 @@ public class GamePanel extends JPanel
 	
 	// resolution
     public static final double SCALE = 1;
-	public static final int WIDTH = (int)(960*SCALE);
+	public static final int WIDTH = (int)(1280*SCALE);
 	public static final int HEIGHT = (int)(720*SCALE);
     private Dimension screenSize;
 

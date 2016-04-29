@@ -14,9 +14,10 @@ public class Game {
 		window.setContentPane(new GamePanel());
 		window.getContentPane().setBackground( new Color(00));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(960,720);
+		window.setSize(1280,720);
 		window.setLocationRelativeTo(null);
 		window.setResizable(false);
+		window.setUndecorated(true);
 		window.pack();
 		window.setVisible(true);
 

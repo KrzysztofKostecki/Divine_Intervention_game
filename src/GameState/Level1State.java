@@ -41,7 +41,7 @@ public class Level1State extends GameState {
     static int score;
     //speed
     private double currentspeed;
-    private final double STARTSPEED = 4*GamePanel.SCALE;
+    private final double STARTSPEED = 6*GamePanel.SCALE;
 
     //change speed
     private final int changeSpeed = (int)(50/GamePanel.SCALE);
@@ -116,7 +116,7 @@ public class Level1State extends GameState {
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();
-        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330*GamePanel.SCALE), random.nextInt(GamePanel.HEIGHT-(int)Platform.pHEIGHT));
+        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330*GamePanel.SCALE),GamePanel.HEIGHT);
         platforms.get(2).reload((int)platforms.get(0).getMinY(),currentspeed);
         for(Platform i: platforms){i.setVector(0,0);}
         }
@@ -141,12 +141,12 @@ public class Level1State extends GameState {
             if(platforms.get(0).getMinX() < 100 ){
                 platforms.get(0).setVector(0,0);
             }
-            if(platforms.get(1).getMaxX() < GamePanel.WIDTH-230*GamePanel.SCALE){
+            if(platforms.get(1).getMaxX() < GamePanel.WIDTH-425*GamePanel.SCALE){
                 settingup = false;
                 platforms.get(2).setPosition(GamePanel.WIDTH,360);
 
                 platforms.get(0).setVector(0,0);
-                platforms.get(1).setVector(0,0);
+                platforms.get(1).setDX(0);
                 platforms.get(2).setVector(0,0);
 
                 player.setVector(currentspeed,0);
@@ -181,14 +181,15 @@ public class Level1State extends GameState {
                     platforms.add(start);
                     int rand = (random.nextInt((GamePanel.HEIGHT-platformSafezone - platformSafezone))+platformSafezone);
 
-                    platforms.get(0).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,
+                    platforms.get(0).setVector((100 - platforms.get(0).getMinX()) / changeSpeed,
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
                     platforms.get(1).reload(rand,currentspeed);
+                    //platforms.get(1).setPosition(GamePanel.WIDTH,rand);
 
-                    platforms.get(1).setVector((0 - platforms.get(0).getMinX()) / changeSpeed,  (rand -platforms.get(0).getMinY()) / changeSpeed);
-                    platforms.get(2).setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    platforms.get(1).setVector((100 - platforms.get(0).getMinX()) / changeSpeed,  0);
+                    platforms.get(2).setVector((100 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
 
-                    player.setVector((0 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
+                    player.setVector((100 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
                     bg.setVector(-currentspeed/2,0);
                     score++;
                     success = false;
@@ -238,7 +239,7 @@ public class Level1State extends GameState {
                 }else{
                     i.draw(g);
                 }
-
+                //g.drawString(Integer.toString(count),(int)i.getMinX(),(int)i.getMinY());
                 count++;
             }
         }
