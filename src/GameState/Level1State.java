@@ -31,6 +31,8 @@ public class Level1State extends GameState {
     private boolean game_over;
     private boolean paused;
 
+    private boolean isJumping;
+
 
 
     //class for experience handle
@@ -46,7 +48,7 @@ public class Level1State extends GameState {
     //change speed
     private final int changeSpeed = (int)(50/GamePanel.SCALE);
     //position of landing
-   private double acceleration = 0.0006*GamePanel.SCALE;
+    private double acceleration = 0.0006*GamePanel.SCALE;
     //platform movement speed
     private double platformSpeed = 6*GamePanel.SCALE;
     //platform safezone
@@ -84,11 +86,11 @@ public class Level1State extends GameState {
         bgmusic.put(OptionsState.PAPAJ,new AudioPlayer("/Music/level1music.mp3"));
         bgmusic.put(OptionsState.STONOG,new AudioPlayer("/Music/stonogmusic.mp3"));
 
-       // init();
 
     }
     @Override
     public void init() {
+        isJumping = true;
         game_over = false;
         settingup = false;
         paused = false;
@@ -116,7 +118,7 @@ public class Level1State extends GameState {
         }
         platforms.get(0).setPosition(0, GamePanel.HEIGHT / 2);
         random = new Random();
-        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 330*GamePanel.SCALE),GamePanel.HEIGHT);
+        platforms.get(1).setPosition(GamePanel.WIDTH - (Platform.pWIDTH + 425*GamePanel.SCALE),GamePanel.HEIGHT);
         platforms.get(2).reload((int)platforms.get(0).getMinY(),currentspeed);
         for(Platform i: platforms){i.setVector(0,0);}
         }
@@ -166,13 +168,17 @@ public class Level1State extends GameState {
                 game_over = true;
             }
             //chceck for collision
-            collision();
 
+            collision();
             //check fo jumpzone
-            if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && Math.round(player.getX()) < platforms.get(0).getMaxX()-10) {
-                player.setJumping(true);
+            if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && isJumping) {
                 player.setInAir(true);
+                player.setJumping(true);
+                player.update();
+                isJumping = false;
+
             }
+
 
             //success operations
             if(platforms.size()==3) {
@@ -184,7 +190,6 @@ public class Level1State extends GameState {
                     platforms.get(0).setVector((100 - platforms.get(0).getMinX()) / changeSpeed,
                             (rand -platforms.get(0).getMinY()) / changeSpeed);
                     platforms.get(1).reload(rand,currentspeed);
-                    //platforms.get(1).setPosition(GamePanel.WIDTH,rand);
 
                     platforms.get(1).setVector((100 - platforms.get(0).getMinX()) / changeSpeed,  0);
                     platforms.get(2).setVector((100 - platforms.get(0).getMinX()) / changeSpeed, (rand -platforms.get(0).getMinY()) / changeSpeed);
@@ -194,6 +199,7 @@ public class Level1State extends GameState {
                     score++;
                     success = false;
                     settingup = true;
+                    isJumping = true;
                 }
             }
 
@@ -212,7 +218,7 @@ public class Level1State extends GameState {
 
                         player.setY(i.getMinY() - Player.pHEIGHT);
                         if (i == platforms.get(1)) {
-                            success = true;
+                                success = true;
                         }
                     }
                 }
@@ -223,8 +229,6 @@ public class Level1State extends GameState {
     @Override
     public void draw(Graphics2D g) {
         bg.draw(g);
-
-
 
         g.setColor(new Color(0xE4EA74));
         g.drawString("Experience: "+Integer.toString(score+experience),10,35);

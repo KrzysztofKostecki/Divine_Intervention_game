@@ -4,10 +4,10 @@ import Main.GamePanel;
 import TileMap.Background;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class HighScoreState extends GameState{
 

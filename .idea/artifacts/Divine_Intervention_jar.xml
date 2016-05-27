@@ -3,9 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Divine_Intervention_jar</output-path>
     <root id="archive" name="Divine_Intervention.jar">
       <element id="module-output" name="Divine_Intervention" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../Divane_intervention_test/Libs/jl1.0.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../Divane_intervention_test/Libs/mp3spi1.9.5.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../Divane_intervention_test/Libs/tritonus_share.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

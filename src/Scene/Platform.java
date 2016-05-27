@@ -71,7 +71,7 @@ public class Platform{
         Random random = new Random();
         minX = GamePanel.WIDTH;
         int delta = (int)(2000/speed);
-        if(delta>200)delta=200;
+        if(delta>360)delta=200;
         //obliczanie położenia Y nowej platformy tak aby była max delta w górę lub max delta w dół od aktualnego położenia gracza.
         minY = random.nextInt((startHeight+delta) - (startHeight-delta))+(startHeight-delta);
     }

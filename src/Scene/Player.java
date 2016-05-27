@@ -35,11 +35,14 @@ public class Player {
         this.dx = dx;
     }
     protected double dy;
+    public void setDY(double dy){
+        this.dy = dy;
+    }
 
-    private double delay = 40;
+    private double delay = 20;
 
     private double gravity = 0.3;
-    private double jumpForce = 10;
+    private double jumpForce = 12;
 
     private boolean JUMPING;
     public boolean INAIR;
@@ -176,12 +179,15 @@ public class Player {
         if(!INAIR && currentAction!=WALK){
             currentAction = WALK;
             animation.setFrames(sprites.get(WALK));
-        }else if(INAIR && currentAction!=JUMP && dy>0) {
+        }else if(INAIR && currentAction!=JUMP && dy<0) {
             currentAction = JUMP;
+            animation.setFrames(sprites.get(JUMP));
+        }
+        else if(INAIR && currentAction!=FALL && dy>0){
+            currentAction = FALL;
             animation.setFrames(sprites.get(FALL));
         }
-        else if(INAIR && currentAction!=JUMP && dy<0)
-            animation.setFrames(sprites.get(JUMP));
+
         animation.setDelay((long)((delay*Math.exp(-getDX()*0.7   ))+(2*delay)));
         //animation.setDelay(20);
         animation.update();

@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Divane_intervention_test/Libs/jl1.0.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/Libs/jl1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Divane_intervention_test/Libs/mp3spi1.9.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/Libs/mp3spi1.9.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -30,7 +30,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Divane_intervention_test/Libs/tritonus_share.jar!/" />
+          <root url="jar://$MODULE_DIR$/Libs/tritonus_share.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
