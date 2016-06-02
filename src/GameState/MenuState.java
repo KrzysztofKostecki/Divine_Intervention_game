@@ -6,29 +6,37 @@ import TileMap.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+
 /**
- * Created by Krzysztof on 05.04.2016.
+ * Klasa obsługująca główne menu gry.
+ * <p>Zawiera tablice z wszystkimi opcjami w menu. Zawiera metody do wypisywania opcji.
+ * Przechwytuje sygnały wysyłane przez klawiaturę, aby uaktualnić stan gry na ten wybrany przez gracza.</p>
  */
 public class MenuState extends GameState {
 	
 	private Background bg;
 	
 	private int currentChoice = 0;
+	/**
+	 * Tablica przechowuje opcje dostępne w menu.
+	 */
 	private String[] options = {
 			"Start",
 			"Options",
-			// Kolybacz HighScore
 			"High Score",
 			"Credits",
-			// Kolybacz
 			"Quit"
 	};
-	
-	private Color titleColor;
-	private Font titleFont;
-	
+
+	private GraphicsEnvironment ge;
 	private Font font;
-	
+	private Background foreGround;
+
+	/**
+	 * Ustawia background oraz czcionkę w menu.
+	 * @param gsm Obiekt stanu gry na którym działamy.
+	 */
 	public MenuState(GameStateManager gsm) {
 		
 		this.gsm = gsm;
@@ -37,13 +45,15 @@ public class MenuState extends GameState {
 			
 			bg = new Background("/Backgrounds/level1bg.png");
 			bg.setVector(-0.5,0);
-			
-			titleColor = new Color(128, 0, 0);
-			titleFont = new Font(
-					"Century Gothic",
-					Font.BOLD,
-					70);
-			font = new Font("Century Gothic", Font.PLAIN, 30);
+			foreGround = new Background("/Backgrounds/frame_main_menu.png");
+
+			URL fontUrl = getClass().getResource("/Fonts/Abel-Regular.ttf");
+			font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
+			font = font.deriveFont(Font.PLAIN,30);
+
+			ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+
 			
 		}
 		catch(Exception e) {
@@ -60,31 +70,34 @@ public class MenuState extends GameState {
 	public void update() {
 		bg.update();
 	}
-	
+
+	/**
+	 * Rysuje tło, tytuł gry oraz wszystkie opcje dostępne w menu.
+	 * @param g Obiekt na którym rysujemy.
+     */
 	public void draw(Graphics2D g) {
 		
 		// draw bg
 		bg.draw(g);
-		
-		// draw title
-		g.setColor(titleColor);
-		g.setFont(titleFont);
-		g.drawString("Divine Intervention", 150, GamePanel.HEIGHT/2-200);
-		
+		foreGround.draw(g);
+
 		// draw menu options
 		g.setFont(font);
 		for(int i = 0; i < options.length; i++) {
 			if(i == currentChoice) {
-				g.setColor(new Color(214, 156, 5));
+				g.setColor(Color.WHITE);
 			}
 			else {
-				g.setColor(Color.BLACK);
+				g.setColor(new Color(6, 32, 29));
 			}
-			drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT-300  + i * 100,g);
+			drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT  + i * 100,g);
 		}
 		
 	}
 
+	/**
+	 * Ustawia {@link #currentChoice} czyli obecny stan na ten wybrany przez gracza.
+	 */
 	private void select() {
 		if(currentChoice == 0) {
 			gsm.setState(GameStateManager.LEVEL1STATE);
@@ -92,9 +105,7 @@ public class MenuState extends GameState {
 		if(currentChoice == 1) {
 			gsm.setState(GameStateManager.OPTIONSSTATE);
 		}
-		// Kolybacz HighScore
 		if(currentChoice == 2) {
-			//high score
 			gsm.setState(GameStateManager.HIGHSCORESTATE);
 		}
 		if (currentChoice == 3)
@@ -107,9 +118,12 @@ public class MenuState extends GameState {
 			System.exit(0);
 
 		}
-		// Kolybacz
+
 	}
-	
+	/**
+	 * Przechwytuje sygnał o tym, który klawisz został wciśnięty przez użytkownika. Umożliwia nawigację po opcjach menu.
+	 * @param k Wciśnięty klawisz.
+	 */
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
 			select();
@@ -127,8 +141,15 @@ public class MenuState extends GameState {
 			}
 		}
 	}
-	public void keyReleased(int k) {}
 
+	public void keyReleased(int k) {}
+	/**
+	 * Wypisuje wypośrodkowany tekst.
+	 * @param s Tekst który ma być wypisany.
+	 * @param w Szerokość pola na którym tekst ma być wypisany.
+	 * @param h Wysokość pola na którym tekst ma być wypisany.
+	 * @param g Pole na którym tekst ma być wypisany.
+	 */
 	public static void drawCenteredString(String s, int w, int h, Graphics g) {
 		FontMetrics fm = g.getFontMetrics();
 		int x = (w - fm.stringWidth(s)) / 2;

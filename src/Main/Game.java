@@ -4,10 +4,17 @@ import javax.swing.JFrame;
 import java.awt.*;
 
 /**
- * Created by Krzysztof on 05.04.2016.
+ * Główna klasa gry, tworzone jest tu okno gry.
+ * <p>Ustawiane są wszystkie parametry okna takie jak: background color, rozmiar, położenie, widoczność, a także
+ * flagi odpowiedzialne za poprawne zamykanie okna.</p>
  */
 public class Game {
-	
+
+	/**
+	 * Tworzy obiekty {@link JFrame} niezbędne do utworzenia okna gry, ustawia podstawowe parametry tego okna.
+	 * @see JFrame
+	 * @param args Nie są wykorzystywane.
+     */
 	public static void main(String[] args) {
 		
 		JFrame window = new JFrame("Divine Intervention");

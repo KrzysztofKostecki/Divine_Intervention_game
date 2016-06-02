@@ -10,15 +10,19 @@ import Utils.ExperienceManager;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by Krzysztof on 05.04.2016.
+ * Klasa obsługująca wszystkie wydarzenia które mają miejsce podczas rozgrywki. Uaktualnia stan gry, tzn. położenie postaci,
+ * platform, zwiększa prędkość postaci. Przechwytuje sygnały z klawiatury
  */
 public class Level1State extends GameState {
     private Background bg;
+    private Background foreGround;
+    private GraphicsEnvironment ge;
     private HashMap<Integer,AudioPlayer> bgmusic;
     private Player player;
 
@@ -45,31 +49,45 @@ public class Level1State extends GameState {
     private double currentspeed;
     private final double STARTSPEED = 6*GamePanel.SCALE;
 
-    //change speed
+
+    /**
+     * Zmiana prędkości
+     */
     private final int changeSpeed = (int)(50/GamePanel.SCALE);
-    //position of landing
+
+    /**
+     * Przyspieszenie.
+     */
     private double acceleration = 0.0006*GamePanel.SCALE;
-    //platform movement speed
+    /**
+     * Prędkość platform.
+     */
     private double platformSpeed = 6*GamePanel.SCALE;
-    //platform safezone
+    /**
+     * Szerokość obszaru platformy na którym może stanąć postać.
+     */
     private int platformSafezone = (int)(200*GamePanel.SCALE);
     //Pause
     private int currentChoice = 0;
+    /**
+     * Tablica przechowująca opcje dostępne w menu pauzy.
+     */
     private String[] options = {
             "Continue",
             "Return to menu",
             "Quit"
     };
 
-    private Color titleColor;
-    private Font titleFont;
     private Font font;
 
     //random just for usage in many places
     private Random random;
 
     private int MOVEABLEPLATFORM = 1;
-
+    /**
+     * Ustawia background oraz ścieżkę dźwiękową.
+     * @param gsm Obiekt stanu gry na któym działamy.
+     */
     public Level1State(GameStateManager gsm){
 
         this.gsm = gsm;
@@ -77,18 +95,35 @@ public class Level1State extends GameState {
 
         try {
             bg = new Background("/Backgrounds/level1bg.png");
+            foreGround = new Background("/Backgrounds/pause.png");
+            URL fontUrl = getClass().getResource("/Fonts/Abel-Regular.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
+            font = font.deriveFont(Font.PLAIN,30);
+
+            ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
 
         }catch (Exception e){
             e.printStackTrace();
         }
         bgmusic = new HashMap<Integer,AudioPlayer>();
         bgmusic.put(OptionsState.DEFAULT,new AudioPlayer("/Music/level1-1.mp3"));
-        bgmusic.put(OptionsState.PAPAJ,new AudioPlayer("/Music/level1music.mp3"));
-        bgmusic.put(OptionsState.STONOG,new AudioPlayer("/Music/stonogmusic.mp3"));
+        bgmusic.put(OptionsState.RED,new AudioPlayer("/Music/level1-1.mp3"));
+        bgmusic.put(OptionsState.BLACK,new AudioPlayer("/Music/level1-1.mp3"));
 
 
     }
     @Override
+    /**
+     *  Tworzy i określa położenie obiektów: postaci oraz początkowych platform.
+     *  <p>
+     *      Tworzy wybraną wcześniej przez gracza postać i umieszcza ją na mapie.
+     *  </p>
+     *  <p>
+     *      Tworzy trzy początkowe platformy. Położenie pierwszej platformy jest zawsze takie samo (0,HEIGhT/2), natomiast położenie
+     *      drugiej i trzeciej platformy jest losowe.
+     *  </p>
+     */
     public void init() {
         isJumping = true;
         game_over = false;
@@ -97,19 +132,17 @@ public class Level1State extends GameState {
         score = 0;
         currentspeed = STARTSPEED;
         bgmusic.get(OptionsState.choosenCharacter).play();
-        //Rog
         experience = ExperienceManager.getExperience();
-        //Rog
 
         player = new Player(OptionsState.choosenCharacter);
-        player.setPosition(0, GamePanel.HEIGHT / 2 - Player.pHEIGHT);
+        player.setPosition(0, (GamePanel.HEIGHT / 2 - Player.pHEIGHT) + 10);
         player.setVector(currentspeed, 0);
         //platforms
         if(platforms == null){
             platforms = new ArrayList<Platform>();
         }
         if(platforms.size() != 3){
-            //platforma startowa, intex 0
+            //platforma startowa, index 0
             platforms.add(new Platform());
             //platforma którą poruszamy, index 1
             platforms.add(new Platform());
@@ -124,6 +157,14 @@ public class Level1State extends GameState {
         }
 
     @Override
+    /**
+     * Aktualizuje stan gry.
+     * <p> Jeśli rozgrywka została zakończona to zapisuje uzyskany wynik i wyświetla menu dostępne po przegranej grze.</p>
+     * <p> Jeśli rozgrywka została zapauzowana to wyświetla dostępne opcje menu.</p>
+     * <p> Jeśli rozgrywka przebiega normalnie, to zwiększana jest prędkość postaci, aktualizowane jest położenie platform,
+     * sprawdzane są warunki kolizji. Sprawdzane jest położenie postaci (w powietrzu czy na platformie). Jeśli nie doszło do kolizji,
+     * to usuwane są te platformy, które zostały już przeskoczone, a generowane są nowe.</p>
+     */
     public void update() {
         if(game_over){
             ExperienceManager.saveExperience(score);
@@ -168,7 +209,6 @@ public class Level1State extends GameState {
                 game_over = true;
             }
             //chceck for collision
-
             collision();
             //check fo jumpzone
             if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && isJumping) {
@@ -178,7 +218,6 @@ public class Level1State extends GameState {
                 isJumping = false;
 
             }
-
 
             //success operations
             if(platforms.size()==3) {
@@ -206,17 +245,19 @@ public class Level1State extends GameState {
         }
     }
 
-
+    /**
+     * Sprawdza czy doszło do kolizji między postacią a platformą.
+     */
     public void collision() {
         if (platforms != null) {
             if (platforms.size() == 3) {
                 for (Platform i : platforms) {
-                    Line2D.Double tempMaxYLine = new Line2D.Double(i.getMinX(), i.getMinY(), i.getMaxX(), i.getMinY());
-                    Line2D.Double tempMinYLine = new Line2D.Double(i.getMinX(), (i.getMinY()+40) , i.getMaxX(), (i.getMinY()+40) );
+                    Line2D.Double tempMaxYLine = new Line2D.Double(i.getMinX(), i.getMinY()+15, i.getMaxX(), i.getMinY()+15);
+                    Line2D.Double tempMinYLine = new Line2D.Double(i.getMinX(), (i.getMinY()+60) , i.getMaxX(), (i.getMinY()+60) );
                     if (tempMaxYLine.intersects(player.getX(), player.getY(), Player.pWIDTH, Player.pHEIGHT) && !(tempMinYLine.intersects(player.getX(), player.getY(), Player.pWIDTH, Player.pHEIGHT))) {
                         player.setInAir(false);
 
-                        player.setY(i.getMinY() - Player.pHEIGHT);
+                        player.setY((i.getMinY()+15) - Player.pHEIGHT);
                         if (i == platforms.get(1)) {
                                 success = true;
                         }
@@ -227,10 +268,15 @@ public class Level1State extends GameState {
     }
 
     @Override
+    /**
+     * Rysuje postać, platformy, wyświetla Experience, Score oraz Best (najlepszy wynik z highscore).
+     * <p>Gdy gra jest zapauzowana rysuje tło oraz opcje dostępne w menu pauzy.</p>
+     * @param g Pole na którym rysujemy.
+     */
     public void draw(Graphics2D g) {
         bg.draw(g);
 
-        g.setColor(new Color(0xE4EA74));
+        g.setColor(new Color(0x0C1D20));
         g.drawString("Experience: "+Integer.toString(score+experience),10,35);
         g.drawString("Score: "+Integer.toString(score),GamePanel.WIDTH-200,35);
         g.drawString("Best: "+Integer.toString(HighScoreState.highest),GamePanel.WIDTH-200,70);
@@ -249,15 +295,16 @@ public class Level1State extends GameState {
         }
         player.draw(g);
         if(paused){
+            foreGround.draw(g);
             g.setFont(font);
             for(int i = 0; i < options.length; i++) {
                 if(i == currentChoice) {
-                    g.setColor(new Color(214, 156, 5));
+                    g.setColor(Color.WHITE);
                 }
                 else {
-                    g.setColor(Color.BLACK);
+                    g.setColor(new Color(6, 32, 29));
                 }
-                drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT-300  + i * 100,g);
+                drawCenteredString(options[i],GamePanel.WIDTH,GamePanel.HEIGHT-100  + i * 100,g);
             }
         }
 
@@ -265,6 +312,16 @@ public class Level1State extends GameState {
     }
 
     @Override
+    /**
+     * Przechwytuje sygnał o tym, który klawisz został wciśnięty przez użytkownika.
+     * <p>Obsługuje ruch platform.
+     * <ul>
+     *     <li>W lub UP- ruch platformy w górę</li>
+     *     <li>S lub DOWN- ruch platformy w dół</li>
+     * </ul></p>
+     * <p>Jeśli gra jest zapauzowana to przechwytuje też sygnały z menu pauzy.</p>
+     * @param k Wciśnięty klawisz.
+     */
     public void keyPressed(int k) {
         if(paused) {
             if(k == KeyEvent.VK_ENTER){
@@ -294,6 +351,17 @@ public class Level1State extends GameState {
     }
 
     @Override
+    /**
+     * Przechwytuje sygnał wysyłany po zwolnieniu klawisza. Platforma przestaje się poruszać gdy
+     * klawisz zostaje puszczony.
+     * <p>
+     *     <ul>
+     *         <li>P powoduje ustawienie flagi pause na true.</li>
+     *         <li>ESCAPE powoduje ustawienie stanu gry na MENUSTATE i powrót do menu głównego gry.</li>
+     *     </ul>
+     * </p>
+     * @param k Wciśnięty klawisz.
+     */
     public void keyReleased(int k) {
         if(platforms!=null) {
             if (platforms.size() == 3) {
@@ -319,18 +387,31 @@ public class Level1State extends GameState {
         }
     }
 
-
+    /**
+     * W zależności od wyboru ustawia flagę paused na wartość false, ustawia stan gry na
+     * MENUSTATE bądź kończy działanie gry.
+     */
     private void select() {
         if(currentChoice == 0) {
             paused = false;
         }
         if(currentChoice == 1) {
+            bgmusic.get(OptionsState.choosenCharacter).stop();
             gsm.setState(GameStateManager.MENUSTATE);
         }
         if(currentChoice == 2) {
+            bgmusic.get(OptionsState.choosenCharacter).stop();
             System.exit(0);
         }
     }
+
+    /**
+     * Wypisuje wypośrodkowany tekst.
+     * @param s Tekst który ma być wypisany.
+     * @param w Szerokość pola na którym tekst ma być wypisany.
+     * @param h Wysokość pola na którym tekst ma być wypisany.
+     * @param g Pole na którym tekst ma być wypisany.
+     */
     public void drawCenteredString(String s, int w, int h, Graphics g) {
         FontMetrics fm = g.getFontMetrics();
         int x = (w - fm.stringWidth(s)) / 2;

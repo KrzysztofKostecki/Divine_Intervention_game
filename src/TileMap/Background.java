@@ -7,7 +7,7 @@ import java.awt.image.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 /**
- * Created by Krzysztof on 05.04.2016.
+ * Klasa służąca do obsługi grafiki, jej wyświetlania i zmiany pozycji.
  */
 public class Background {
 
@@ -18,7 +18,10 @@ public class Background {
 	private double dx;
 	private double dy;
 
-	
+	/**
+	 * Wczytuje do {@link #image} grafikę.
+	 * @param s Ścieżka do grafiki.
+     */
 	public Background(String s) {
 		
 		try {
@@ -31,19 +34,30 @@ public class Background {
 		}
 		
 	}
-	
+
+	/**
+	 * Ustawia wektor o jaki przesuwana jest grafika.
+	 * @param dx Składowa x.
+	 * @param dy Składowa y.
+     */
 	public void setVector(double dx, double dy) {
 		this.dx = dx;
 		this.dy = dy;
 	}
 
 
-	
+	/**
+	 * Aktualizuje położenie grafiki.
+	 */
 	public void update() {
 		x += dx;
 		y += dy;
 	}
-	
+
+	/**
+	 * Rysuje background.
+	 * @param g Obiekt na którym rysujemy.
+     */
 	public void draw(Graphics2D g) {
 
 		g.drawImage(image, (int)x, (int)y, null);

@@ -8,14 +8,26 @@ import javax.swing.JPanel;
 
 import GameState.GameStateManager;
 /**
- * Created by Krzysztof on 05.04.2016.
+ * Klasa obsługująca główny panel jak i pętle gry. Udostępnia metody odpowiedzialne za przechwytywanie sygnałów
+ * wysyłanych z klawiatury. Ustawia podstawowe parametry dla okna gry.
+ * @see JPanel
+ * @see KeyListener
  */
 public class GamePanel extends JPanel 
 	implements Runnable, KeyListener{
 	
 	// resolution
+	/**
+	 * Określa rozdzielczość okna.
+	 */
     public static final double SCALE = 1;
+	/**
+	 * Szerokość okna gry.
+	 */
 	public static final int WIDTH = (int)(1280*SCALE);
+	/**
+	 * Wysokość okna gry.
+	 */
 	public static final int HEIGHT = (int)(720*SCALE);
     private Dimension screenSize;
 
@@ -23,7 +35,7 @@ public class GamePanel extends JPanel
 	// game thread
 	private Thread thread;
 	private boolean running;
-	private int FPS = 144;
+	private int FPS = 80;
 	private long targetTime = 1000 / FPS;
 	
 	// image
@@ -33,6 +45,12 @@ public class GamePanel extends JPanel
 	// game state manager
 	private GameStateManager gsm;
 	
+	/**
+	 * Tworzy nowy GamePanel inicjalizując go wartościami {@link #HEIGHT} i {@link #WIDTH}.
+	 * Ustawia flagę setFocusable na wartość true.
+	 * Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+	 * @see Component#setFocusable(boolean)
+	 */
 	public GamePanel() {
 		super();
 		setPreferredSize(
@@ -43,6 +61,11 @@ public class GamePanel extends JPanel
 
 	}
 	
+	@Override
+	/**
+	 * Tworzy nowy wątek i wymusza rozpoczęcie jego działania
+	 * @see Component#addNotify()
+	 */
 	public void addNotify() {
 		super.addNotify();
 		if(thread == null) {
@@ -52,6 +75,12 @@ public class GamePanel extends JPanel
 		}
 	}
 	
+	
+	/**
+	 * Inicjalizuje {@link #image} wartościami {@link #WIDTH} oraz {@link #HEIGHT}.
+	 * Ustawia flagę {@link #running} na true, co umożliwia start pętli gry.
+	 * Metoda jest wywoływana przez {@link #run()}.
+	 */
 	private void init() {
 		
 		image = new BufferedImage(
@@ -66,6 +95,11 @@ public class GamePanel extends JPanel
 		
 	}
 	
+	/**
+	 * Rozpoczyna główną pętlę gry. W każdym obiegu pętli wywoływane są metody
+	 * {@link #update()}, {@link #draw()} and {@link #drawToScreen()},
+	 * po czym wątek jest usypiany.
+	 */
 	public void run() {
 		
 		init();
@@ -98,13 +132,23 @@ public class GamePanel extends JPanel
 		}
 		
 	}
-	
+
+	/**
+	 * Aktualizuje stan gry.
+	 */
 	private void update() {
 		gsm.update();
 	}
+	
+	/**
+	 * Obsługuje rysowanie w oknie gry.
+	 * {@see GameStateManager#draw(java.awt.Graphics2D)}
+	 */
 	private void draw() {
 		gsm.draw(g);
 	}
+
+
 	private void drawToScreen() {
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0,
@@ -114,9 +158,18 @@ public class GamePanel extends JPanel
 	}
 	
 	public void keyTyped(KeyEvent key) {}
+
+	/**
+	 * Obsługuje sygnały wysyłane po naciśnięciu klawisza.
+	 * @param key Wciśnięty klawisz.
+	 */
 	public void keyPressed(KeyEvent key) {
 		gsm.keyPressed(key.getKeyCode());
 	}
+	/**
+	 * Obsługuje sygnały wysyłane po puszczeniu klawisza.
+	 * @param key Puszczony klawisz.
+	 */
 	public void keyReleased(KeyEvent key) {
 		gsm.keyReleased(key.getKeyCode());
 	}

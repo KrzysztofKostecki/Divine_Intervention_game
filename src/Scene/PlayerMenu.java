@@ -5,7 +5,10 @@ import Main.GamePanel;
 import java.awt.*;
 
 /**
- * Created by Krzysztof on 24.04.2016.
+ * Klasa przehcowująca nazwy wszystkich postaci wyświetlanych w menu wyboru postaci. Przekazuje indeks postaci którą wybrał gracz do
+ * klasy Player.
+ *
+ *  *@see {@link Player}
  */
 public class PlayerMenu extends Player {
 
@@ -15,6 +18,12 @@ public class PlayerMenu extends Player {
             "PAPAJ",
             "STONOG"
     };
+
+    /**
+     * Przypisuje do wybranej przez gracza postaci jej nazwę.
+     * @see Player#Player(int)
+     * @param character Wybrana postać.
+     */
     public PlayerMenu(int character) {
         super(character);
         animation.setDelay(80);
@@ -22,6 +31,10 @@ public class PlayerMenu extends Player {
     }
 
     @Override
+    /**
+     * Ustawia początkowe położenie postaci.
+     * @see Player#update()
+     */
     public void update() {
         super.x = GamePanel.WIDTH/2 - Player.pWIDTH/2;
         super.y = 200;
@@ -30,6 +43,9 @@ public class PlayerMenu extends Player {
     }
 
     @Override
+    /**
+     * @see {@link Player#draw(Graphics2D)}
+     */
     public void draw(Graphics2D g) {
         super.draw(g);
         //g.setColor(new Color(214, 156, 5));
