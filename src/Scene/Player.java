@@ -127,7 +127,7 @@ public class Player {
         // load sprites
         setCharacter(character);
         sfx = new HashMap<Integer, AudioPlayer>();
-        sfx.put(JUMP,new AudioPlayer("/SFX/jump.mp3"));
+        sfx.put(JUMP,new AudioPlayer("/SFX/jump.wav"));
         animation = new Animation();
         currentAction = WALK;
         animation.setFrames(sprites.get(WALK));

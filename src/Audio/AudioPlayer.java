@@ -1,6 +1,10 @@
 package Audio;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+
 /**
  * Klasa zawierająca metody odpowiedzialne za odczytywanie audio z plików i ich odtwarzanie.
  * @see AudioInputStream
@@ -20,10 +24,9 @@ public class AudioPlayer {
 
         try {
 
-            AudioInputStream ais =
-                    AudioSystem.getAudioInputStream(
-                            getClass().getResourceAsStream(s)
-                    );
+            URL url = AudioPlayer.class.getResource(s);
+            AudioInputStream ais =  AudioSystem.getAudioInputStream(url);
+
             AudioFormat baseFormat = ais.getFormat();
             AudioFormat decodeFormat = new AudioFormat(
                     AudioFormat.Encoding.PCM_SIGNED,
@@ -32,7 +35,7 @@ public class AudioPlayer {
                     baseFormat.getChannels(),
                     baseFormat.getChannels() * 2,
                     baseFormat.getSampleRate(),
-                    false
+                    baseFormat.isBigEndian()
             );
             AudioInputStream dais =
                     AudioSystem.getAudioInputStream(

@@ -107,9 +107,9 @@ public class Level1State extends GameState {
             e.printStackTrace();
         }
         bgmusic = new HashMap<Integer,AudioPlayer>();
-        bgmusic.put(OptionsState.DEFAULT,new AudioPlayer("/Music/level1-1.mp3"));
-        bgmusic.put(OptionsState.RED,new AudioPlayer("/Music/level1-1.mp3"));
-        bgmusic.put(OptionsState.BLACK,new AudioPlayer("/Music/level1-1.mp3"));
+        bgmusic.put(OptionsState.DEFAULT,new AudioPlayer("/Music/level1-1.wav"));
+        bgmusic.put(OptionsState.RED,new AudioPlayer("/Music/level1-1.wav"));
+        bgmusic.put(OptionsState.BLACK,new AudioPlayer("/Music/level1-1.wav"));
 
 
     }
@@ -211,7 +211,7 @@ public class Level1State extends GameState {
             //chceck for collision
             collision();
             //check fo jumpzone
-            if (Math.round(player.getX()) > platforms.get(0).getMaxX()-20 && isJumping) {
+            if (Math.round(player.getX()) > platforms.get(0).getMaxX()-35 && isJumping) {
                 player.setInAir(true);
                 player.setJumping(true);
                 player.update();

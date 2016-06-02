@@ -113,9 +113,10 @@ public class OptionsState  extends GameState{
             e.printStackTrace();
         }
         sfx = new HashMap<Integer, AudioPlayer>();
-        sfx.put(DEFAULT, new AudioPlayer("/SFX/c.mp3"));
-        sfx.put(RED,new AudioPlayer("/SFX/f.mp3"));
-        sfx.put(BLACK,new AudioPlayer("/SFX/fsharp.mp3"));
+
+        sfx.put(DEFAULT, new AudioPlayer("/SFX/c.wav"));
+        sfx.put(RED,new AudioPlayer("/SFX/f.wav"));
+        sfx.put(BLACK,new AudioPlayer("/SFX/fsharp.wav"));
 
         choosenCharacter = 0;
 
