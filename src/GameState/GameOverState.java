@@ -104,7 +104,7 @@ public class GameOverState extends GameState {
         g.setColor(new Color(6, 32, 29));
 		drawCenteredString("Your score: " + Integer.toString(Level1State.score),
 				GamePanel.WIDTH,
-				GamePanel.HEIGHT,g);
+				GamePanel.HEIGHT-45,g);
 
 		// draw menu options
 		for(int i = 0; i < options.length; i++) {

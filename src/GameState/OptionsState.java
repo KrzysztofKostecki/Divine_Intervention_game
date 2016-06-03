@@ -153,6 +153,7 @@ public class OptionsState  extends GameState{
         foreGround.draw(g);
         player.draw(g);
         g.setFont(font);
+        g.setColor(Color.WHITE);
         drawCenteredString("<< >>",GamePanel.WIDTH,GamePanel.HEIGHT + 50,g);
         for(int i = 0; i < options.length; i++) {
             if(i == currentChoice) {
