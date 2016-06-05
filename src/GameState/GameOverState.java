@@ -47,6 +47,7 @@ public class GameOverState extends GameState {
 		try {
 
 			bg = new Background("/Backgrounds/level1bg.png");
+			bg.setVector(-0.5,0);
             foreGround = new Background("/Backgrounds/game_over.png");
 			URL fontUrl = getClass().getResource("/Fonts/Abel-Regular.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
@@ -121,8 +122,9 @@ public class GameOverState extends GameState {
 			g.setColor(new Color(6, 32, 29));
 			g.fillRect(GamePanel.WIDTH/2-250,GamePanel.HEIGHT/2,500,200);
 			g.setColor(Color.WHITE);
+			drawCenteredString("Enter your nickname", GamePanel.WIDTH,GamePanel.HEIGHT + 100,g);
 			for (int i1 = 0; i1 < nickname.size(); i1++) {
-				drawCenteredString(nickname.get(i1), GamePanel.WIDTH - 150 + i1*150,GamePanel.HEIGHT + 160,g);
+				drawCenteredString(nickname.get(i1), GamePanel.WIDTH - 150 + i1*150,GamePanel.HEIGHT + 200,g);
 			}
 		}
 		
